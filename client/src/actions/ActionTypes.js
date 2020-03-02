@@ -1,0 +1,7 @@
+const ActionTypes = {
+    SET_CANVAS_SIZE: 'SET_CANVAS_SIZE',
+    CHANGE_SHAPE_COLOR: 'CHANGE_SHAPE_COLOR',
+    CHANGE_BACKGROUND_COLOR: 'CHANGE_BACKGROUND_COLOR'
+}
+
+export default ActionTypes;

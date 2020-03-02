@@ -1,0 +1,46 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.main {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(214, 214, 211);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+}
+.wrap {
+    width: 350px;
+    z-index: 2;
+}
+.buttonWrap {
+    display: flex;
+    justify-content: space-evenly;
+}
+.title {
+    position: absolute;
+    top: 30px;
+    left: 60px;
+}
+.button-link, .button-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+.logo-lg {
+    position: absolute;
+    bottom:0;
+}
+.logo-container {
+    margin-bottom: 50px;
+    width: 250px;
+    height: 100px;
+    position:relative;
+}
+.button {
+    background-color: rgb(50,50,50);
+    border: none;
+}

@@ -1,0 +1,20 @@
+.canvas-wrap {
+    display: flex;
+    width: 100vw;
+    overflow: hidden;
+    height: 100vh;
+    background-color: rgb(200,200,200);
+}
+
+.canvas-display {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(200,200,200);
+}
+
+.canvas-main {
+    border: 1px solid black;
+}
