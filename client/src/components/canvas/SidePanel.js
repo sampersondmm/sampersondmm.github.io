@@ -12,8 +12,8 @@ class SidePanel extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isOpen: Common.size,
-            setup: false
+            isOpen: false,
+            setup: true
         }
         this.controlMenu = this.controlMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);

@@ -60,7 +60,12 @@ class SetupCanvas extends Component {
                         </div>
                     </div>
                     <div className='setup-canvas-bottom'>
-                        <Button className='button'variant="primary" onClick={() => this.props.apply(this.state.width, this.state.height, false)}type="submit">
+                        <Button 
+                            className='button'variant="primary" 
+                            onClick={() => this.props.apply(this.state.width, this.state.height, false)}
+                            type="submit"
+                            disabled={!this.state.width || !this.state.height}    
+                        >
                             Submit
                         </Button>
                     </div>
