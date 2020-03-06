@@ -24,6 +24,14 @@ changeBackgroundColor = color => {
             backgroundColor: color
         }
     }
-};
+},
+addColorToPalette = color => {
+    return {
+        type: ActionTypes.ADD_TO_PALETTE,
+        payload: {
+            color
+        }
+    }
+}
 
-export {setCanvasSize, changeShapeColor, changeBackgroundColor};
+export {setCanvasSize, changeShapeColor, changeBackgroundColor, addColorToPalette};

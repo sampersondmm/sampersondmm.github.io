@@ -13,7 +13,7 @@ class SidePanel extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            setup: true
+            setup: false
         }
         this.controlMenu = this.controlMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
@@ -105,7 +105,7 @@ class SidePanel extends Component {
                     <PanelButton 
                         name={Common.exit} 
                         exit={true}
-                        icon={<i class="far fa-portal-exit"></i>}
+                        icon={<i className="far fa-portal-exit"></i>}
                     />
                 </div>
             </div>

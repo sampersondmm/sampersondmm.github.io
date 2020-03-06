@@ -6,7 +6,8 @@ const DEFAULT_STATE = {
   width: 800,
   height: 800,
   backgroundColor: 'rgb(30,30,40)',
-  shapeColor: 'rgb(200,200,230)'
+  shapeColor: 'rgb(200,200,230)',
+  colorPalette: []
 }
 
 const sidePanel = (state = DEFAULT_STATE, action = {}) => {
@@ -28,6 +29,11 @@ const sidePanel = (state = DEFAULT_STATE, action = {}) => {
       return {
         ...state,
         backgroundColor: payload.backgroundColor
+      }
+    case ActionTypes.ADD_TO_PALETTE:
+      return {
+        ...state,
+        colorPalette: [...state.colorPalette, payload.color]
       }
     default:
       return state;
