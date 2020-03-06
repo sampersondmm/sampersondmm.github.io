@@ -277,7 +277,7 @@ export default class CircleCanvas extends Component {
             circle.posY = posY;
         }
 
-        this.setState(state => ({...state}));
+        // this.setState(state => ({...state}));
         this.raf = requestAnimationFrame(this.updateAnimationState);
     }
 

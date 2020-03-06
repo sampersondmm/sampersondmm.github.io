@@ -3,7 +3,6 @@ import BaseMenu from './BaseMenu';
 import {connect} from 'react-redux';
 import ColorPicker from './ColorPicker';
 import Common from '../../constants/common';
-import {Button, InputGroup, FormControl} from 'react-bootstrap';
 import Size from '../../constants/size';
 import {changeShapeColor, changeBackgroundColor, addColorToPalette} from '../../actions/canvasActions';
 import map from 'lodash/map';
@@ -17,7 +16,6 @@ class ColorMenu extends BaseMenu {
         }
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleColorOptions = this.handleColorOptions.bind(this);
-        this.completeColorChange = this.completeColorChange.bind(this);
         this.addToPalette = this.addToPalette.bind(this);
         this.renderPalette = this.renderPalette.bind(this);
     }
@@ -55,21 +53,8 @@ class ColorMenu extends BaseMenu {
     }
     renderPalette(){
         return map(this.props.colorPalette, item => {
-            return <div className='color-menu-color-palette-item' style={{backgroundColor: item}}></div>
+            return <div className='color-menu-color-palette-item' style={{backgroundColor: item.color}}></div>
         });
-    }
-    completeColorChange(value){
-        let color = null;
-        if(this.state.status === Common.shape){
-            this.props.dispatch(changeShapeColor(color));
-        } else {
-            this.props.dispatch(changeBackgroundColor(value));
-        }
-        this.setState(state => ({
-            ...state, 
-            dirty: true,
-            value
-        }))
     }
     getAdditionalComponents(){
         const style = {
@@ -120,7 +105,6 @@ class ColorMenu extends BaseMenu {
                 <ColorPicker 
                     color={color} 
                     colorChange={this.handleColorChange}
-                    completeColorChange={this.completeColorChange}
                     shapeColor={this.props.shapeColor}
                     backgroundColor={this.props.backgroundColor}
                 />

@@ -19,7 +19,7 @@ class BaseMenu extends Component {
         return (
             <div className='side-panel-menu' style={style.main}>
                 <div className='side-panel-icon'>
-                    <i class="fal fa-window-close panel-button" onClick={this.props.closeMenu}></i>
+                    <i className="fal fa-window-close panel-button" onClick={this.props.closeMenu}></i>
                 </div>
                 {this.getAdditionalComponents()}
             </div>

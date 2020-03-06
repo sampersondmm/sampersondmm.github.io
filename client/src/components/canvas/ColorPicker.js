@@ -4,19 +4,8 @@ import {EditableInput, Hue, Alpha, Saturation, Checkboard} from 'react-color/lib
 import Size from '../../constants/size';
 
 class ColorPicker extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            hex: this.props.hex,
-            hsl: this.props.hsl,
-            color: `rgb(${this.props.hsl.h}, ${this.props.hsl.s}, ${this.props.hsl.l}, ${this.props.hsl.a})`
-        }
-    }
     render(){
         const style = {
-            main: {
-                width: Size.sidePanelMenuWidth
-            },
             shape: {
                 width: '50%',
                 height: '50%',
@@ -24,29 +13,34 @@ class ColorPicker extends Component {
             }
           };
           return (
-            <div style={style.main}>
-                <div className='color-menu-saturation'>
+            <div className='color-picker-wrap'>
+                <div className='color-picker-saturation'>
                   <Saturation 
                     {...this.props} 
                     onChange={event => this.props.colorChange(event, this.props.hex)}
-                    onChangeComplete={this.props.completeColorChange}
+                    // onChangeComplete={this.props.completeColorChange}
                 />
                 </div>
-                <div className='color-menu-hue'>
+                <div className='color-picker-hue'>
                   <Hue 
                     {...this.props} 
                     onChange={event => this.props.colorChange(event, this.props.hex)}
-                    onChangeComplete={this.props.completeColorChange} 
+                    // onChangeComplete={this.props.completeColorChange} 
                 />
                 </div>
-                <div  className='color-menu-alpha'>
+                <div  className='color-picker-alpha'>
                     <Checkboard/>
                   <Alpha 
                     {...this.props} 
                     onChange={event => this.props.colorChange(event, this.props.hex)}
-                    onChangeComplete={this.props.completeColorChange}
+                    // onChangeComplete={this.props.completeColorChange}
                 />
                 </div>
+                {this.props.applyColorChange && (
+                    <div className='color-picker-bottom'>
+                        <i onClick={() => this.props.applyColorChange(this.props.hex)} className="fal fa-check color-picker-icon"></i>
+                    </div>
+                )}
             </div>
           )
     }

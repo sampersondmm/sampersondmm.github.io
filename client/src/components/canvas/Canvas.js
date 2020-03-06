@@ -7,9 +7,6 @@ import Size from '../../constants/size';
 import CircleCanvas from './CanvasAnimation'
 
 class Canvas extends Component {
-    constructor(props){
-        super(props);
-    }
     render(){
         const style = {
             main: {

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Common from '../../constants/common';
 import PanelButton from './PanelButton';
 import ColorMenu from './ColorMenu';
+import PaletteMenu from './PaletteMenu';
 import SizeMenu from './SizeMenu';
 import ZoomMenu from './ZoomMenu';
 import SetupCanvas from './SetupCanvas';
@@ -12,12 +13,13 @@ class SidePanel extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isOpen: false,
+            isOpen: Common.palette,
             setup: false
         }
         this.controlMenu = this.controlMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
         this.setCanvasSize = this.setCanvasSize.bind(this);
+        this.handleMenus = this.handleMenus.bind(this);
     }
     controlMenu(value){
         this.setState(state => ({   
@@ -30,6 +32,44 @@ class SidePanel extends Component {
             ...state,
             isOpen: false
         }))
+    }
+    handleMenus(){
+        switch(this.state.isOpen){
+            case Common.color:
+                return (
+                    <ColorMenu 
+                        name={Common.color}
+                        closeMenu={this.closeMenu} 
+                    />
+                )
+            case Common.size:
+                return (
+                    <SizeMenu 
+                        name={Common.size}
+                        width={this.props.width} 
+                        height={this.props.height} 
+                        apply={this.setCanvasSize}
+                        closeMenu={this.closeMenu} 
+                    />
+                )
+            case Common.zoom:
+                return (
+                    <ZoomMenu  
+                        name={Common.zoom}
+                        closeMenu={this.closeMenu} 
+                        color={'rgb(200,200,200)'}
+                    />
+                )
+            case Common.palette:
+                return (
+                    <PaletteMenu
+                        name={Common.palette}
+                        closeMenu={this.closeMenu} 
+                    />
+                )
+            default:
+                return null;
+        }
     }
     setCanvasSize(width, height){
         this.props.dispatch(setCanvasSize(Number(width), Number(height)))
@@ -44,26 +84,9 @@ class SidePanel extends Component {
         return (
             <div className='side-panel'>
                 <div>
-                    {this.state.isOpen === Common.color && (
-                        <ColorMenu 
-                            name={Common.color}
-                            isOpen={this.state.isOpen === Common.color} 
-                            closeMenu={this.closeMenu} 
-                        />
-                    )}
-                    {this.state.isOpen === Common.size && (
-                        <SizeMenu 
-                            name={Common.size}
-                            isOpen={this.state.isOpen === Common.size}
-                            width={this.props.width} 
-                            height={this.props.height} 
-                            apply={this.setCanvasSize}
-                            closeMenu={this.closeMenu} 
-                        />
-                    )}
-                    {this.state.isOpen === Common.zoom && (
-                        <ZoomMenu isOpen={this.state.isOpen === Common.zoom} closeMenu={this.closeMenu} color={'rgb(200,200,200)'}/>
-                    )}
+                
+                    {this.handleMenus()}
+
                     {this.state.setup && (
                         <SetupCanvas apply={this.setCanvasSize}/>
                     )}
