@@ -4,28 +4,49 @@ import SidePanel from './SidePanel';
 import BottomPanel from './BottomPanel';
 import TopPanel from './TopPanel';
 import Size from '../../constants/size';
-import CircleCanvas from './CanvasAnimation'
+import ShapeCanvas from './ShapeCanvas'
+// import CircleCanvas from './CanvasAnimation'
 
 class Canvas extends Component {
-    render(){
-        const style = {
-            main: {
-                width: `${this.props.width}px`,
-                height: `${this.props.height}px`
-            }
+    constructor(props){
+        super(props);
+        this.state = {
+            sidePanelOpen: false
         }
+        this.handleSideMenu = this.handleSideMenu.bind(this);
+    }
+    handleSideMenu(open){
+        this.setState(state => ({
+            ...state,
+            sidePanelOpen: open
+        }))
+    }
+    render(){
+        const width = this.state.sidePanelOpen ? 
+            Size.sidePanelWidth + Size.sideMenuWidth : 
+            Size.sidePanelWidth,
+            style = {
+                canvasDisplay: {
+                    width: `calc(100vw - ${width}px)`,
+                    height: `calc(100vh - ${Size.topPanelWidth}px)`,
+                    border: '2px solid yellow'
+                }
+            }
         return(
             <div className='canvas-wrap'>
-                <SidePanel/>
-                <div className='canvas-display' style={{width: `calc(${Size.sidePanelWidth} - 100vw)`}}>
-                    <TopPanel/>
-                        <CircleCanvas 
+                <TopPanel/>
+                <div className='canvas-display'>
+                    <SidePanel
+                        handleMenu={this.handleSideMenu}
+                    />
+                    <div className='canvas-display-inner' style={style.canvasDisplay}>
+                        <ShapeCanvas 
                             width={this.props.width}
                             height={this.props.height}
                             backgroundColor={this.props.backgroundColor}
                             shapeColor={this.props.shapeColor}
                         />
-                    <BottomPanel/>
+                    </div>
                 </div>
             </div>
         )

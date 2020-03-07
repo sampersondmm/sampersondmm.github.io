@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavDropdown,Form, FormControl, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import logo from '../images/logo.png'
+import logo from '../images/newLogo.png'
 
 class NavBar extends Component {
     constructor(props){

@@ -1,6 +1,7 @@
 const Size = {
     sidePanelWidth: 50,
-    sidePanelMenuWidth: 200
+    sideMenuWidth: 300,
+    topPanelWidth: 50
 } 
 
 export default Size;

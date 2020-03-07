@@ -15,6 +15,7 @@ import './css/loginPage.css';
 import './css/homePage.css';
 import './css/canvas.css';
 import './css/sidePanel.css';
+import './css/topPanel.css';
 import './css/navbar.css';
 import './css/bottomPanel.css';
 import './css/colorMenu.css';

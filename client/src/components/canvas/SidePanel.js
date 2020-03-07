@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Common from '../../constants/common';
 import PanelButton from './PanelButton';
-import ColorMenu from './ColorMenu';
+import LayerMenu from './LayerMenu';
 import PaletteMenu from './PaletteMenu';
 import SizeMenu from './SizeMenu';
 import ZoomMenu from './ZoomMenu';
@@ -13,7 +13,7 @@ class SidePanel extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isOpen: Common.palette,
+            isOpen: false,
             setup: false
         }
         this.controlMenu = this.controlMenu.bind(this);
@@ -28,6 +28,7 @@ class SidePanel extends Component {
         }))
     }
     closeMenu(){
+        this.props.handleMenu(false)
         this.setState(state => ({
             ...state,
             isOpen: false
@@ -35,35 +36,11 @@ class SidePanel extends Component {
     }
     handleMenus(){
         switch(this.state.isOpen){
-            case Common.color:
+            case Common.layers:
+                this.props.handleMenu(true);
                 return (
-                    <ColorMenu 
-                        name={Common.color}
-                        closeMenu={this.closeMenu} 
-                    />
-                )
-            case Common.size:
-                return (
-                    <SizeMenu 
-                        name={Common.size}
-                        width={this.props.width} 
-                        height={this.props.height} 
-                        apply={this.setCanvasSize}
-                        closeMenu={this.closeMenu} 
-                    />
-                )
-            case Common.zoom:
-                return (
-                    <ZoomMenu  
-                        name={Common.zoom}
-                        closeMenu={this.closeMenu} 
-                        color={'rgb(200,200,200)'}
-                    />
-                )
-            case Common.palette:
-                return (
-                    <PaletteMenu
-                        name={Common.palette}
+                    <LayerMenu 
+                        name={Common.layers}
                         closeMenu={this.closeMenu} 
                     />
                 )
@@ -83,7 +60,6 @@ class SidePanel extends Component {
     render(){
         return (
             <div className='side-panel'>
-                <div>
                 
                     {this.handleMenus()}
 
@@ -92,45 +68,10 @@ class SidePanel extends Component {
                     )}
 
                     <PanelButton 
-                        name={Common.size}
+                        name={Common.layers}
                         handleClick={this.controlMenu}
-                        icon={<i className="far fa-expand-arrows"></i>}
+                        icon={<i className="fal fa-layer-group"></i>}
                     />
-                    <PanelButton 
-                        name={Common.shape}
-                        icon={<i className="far fa-shapes"></i>}
-                    />
-                    <PanelButton 
-                        name={Common.color}
-                        handleClick={this.controlMenu}
-                        icon={<i className="far fa-fill"></i>}
-                    />
-                    <PanelButton 
-                        name={Common.palette}
-                        handleClick={this.controlMenu}
-                        icon={<i className="far fa-palette"></i>}
-                    />
-                    <PanelButton 
-                        name={Common.zoom}
-                        icon={<i className="far fa-search-plus"></i>}
-                    />
-                </div>
-
-                <div>
-                    <PanelButton 
-                        name={Common.clear}
-                        icon={<i className="far fa-trash"></i>}
-                    />
-                    <PanelButton 
-                        name={Common.save}
-                        icon={<i className="far fa-download"></i>}
-                    />
-                    <PanelButton 
-                        name={Common.exit} 
-                        exit={true}
-                        icon={<i className="far fa-portal-exit"></i>}
-                    />
-                </div>
             </div>
         )
     }

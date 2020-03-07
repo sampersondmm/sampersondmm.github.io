@@ -9,7 +9,8 @@ const Common = {
     background: 'Background',
     clear: 'Clear',
     save: 'Save',
-    palette: 'Palette'
+    palette: 'Palette',
+    layers: 'Layers',
 }
 
 export default Common;

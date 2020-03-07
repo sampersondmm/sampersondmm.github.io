@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import logo from '../images/logo.png';
+import logo from '../images/newLogo.png';
 import CircleCanvas from './loginAnimation'
 
 class LoginPage extends Component {

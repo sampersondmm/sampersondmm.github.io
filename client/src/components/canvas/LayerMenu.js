@@ -6,10 +6,12 @@ import Common from '../../constants/common';
 import Size from '../../constants/size';
 import {changeShapeColor, changeBackgroundColor} from '../../actions/canvasActions';
 import map from 'lodash/map';
+import {MenuConstants} from './BaseMenu';
 
-class ColorMenu extends BaseMenu {
+class LayerMenu extends BaseMenu {
     constructor(props){
         super(props);
+        this.menuType = MenuConstants.sideMenu
         this.state = {
             status: Common.shape,
             dirty: false
@@ -117,4 +119,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ColorMenu);
+export default connect(mapStateToProps)(LayerMenu);

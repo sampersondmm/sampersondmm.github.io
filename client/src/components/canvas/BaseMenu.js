@@ -2,18 +2,39 @@ import React, {Component} from 'react';
 import Size from '../../constants/size';
 import Colors from '../../constants/colors';
 
+export const MenuConstants = {
+    sideMenu: 'Side Menu'
+}
+
 class BaseMenu extends Component {
     constructor(props) {
         super(props);
+
+        this.menuType = MenuConstants.sideMenu
+
+        this.determinePanelType = this.determinePanelType.bind(this);
+        this.renderSidePanel = this.renderSidePanel.bind(this);
     }
     getAdditionalComponents(){
         //called from child
     }
-    render() {
+    determinePanelType(){
+        switch(this.menuType){
+            case MenuConstants.sideMenu:
+                return this.renderSidePanel();
+            default:
+                break;
+        }
+    }
+    renderSidePanel(){
         const style ={ 
             main: {
-                left: `${Size.sidePanelWidth-5}px`,
-                color: Colors.sideMenuGray
+                left: `${Size.sidePanelWidth}px`,
+                top: `${Size.sidePanelWidth}px`,
+                height: `calc(100vh - ${Size.sidePanelWidth}px)`,
+                width: `${Size.sideMenuWidth}px`,
+                color: Colors.sideMenuGray,
+                border: '2px solid red'
             }
         }
         return (
@@ -24,6 +45,9 @@ class BaseMenu extends Component {
                 {this.getAdditionalComponents()}
             </div>
         )
+    }
+    render() {
+       return this.determinePanelType();
     }
 }
 
