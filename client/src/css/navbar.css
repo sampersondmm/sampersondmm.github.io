@@ -1,4 +1,8 @@
-.logo {
-    margin-right: -50px;
-    width: 80px;
+.navbar-logo {
+    width: 50px;
+    height: 40px;
+}
+.navbar-logo-icon {
+    height: 60px;
+    width: 60px;
 }

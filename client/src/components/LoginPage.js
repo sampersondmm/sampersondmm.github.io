@@ -10,13 +10,13 @@ class LoginPage extends Component {
     }
     render(){
         return(
-            <div className='main'>
+            <div className='login-page-main'>
                 <CircleCanvas/>
-                <div className='logo-container'>
-                    <img className='logo-lg' src={logo}/>
-                    <h2 className='title'>Box Canvas</h2>
+                <div className='login-page-logo-container'>
+                    <img className='login-page-logo' src={logo}/>
+                    <h2 className='login-page-title'>Box Canvas</h2>
                 </div>
-                <Form className='wrap'>
+                <Form className='login-page-wrap'>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label className='center'>Email address</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" />

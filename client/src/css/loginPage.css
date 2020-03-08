@@ -4,7 +4,7 @@
     align-items: center;
     flex-direction: column;
 }
-.main {
+.login-page-main {
     width: 100vw;
     height: 100vh;
     background-color: rgb(214, 214, 211);
@@ -13,7 +13,7 @@
     align-items: center;
     flex-direction:column;
 }
-.wrap {
+.login-page-wrap {
     width: 350px;
     z-index: 2;
 }
@@ -21,20 +21,21 @@
     display: flex;
     justify-content: space-evenly;
 }
-.title {
+.login-page-title {
     position: absolute;
     top: 30px;
-    left: 60px;
+    left: 80px;
 }
 .button-link, .button-link:hover {
     text-decoration: none;
     color: inherit;
 }
-.logo-lg {
+.login-page-logo {
     position: absolute;
-    bottom:0;
+    top:-10px;
+    left: -20px;
 }
-.logo-container {
+.login-page-logo-container {
     margin-bottom: 50px;
     width: 250px;
     height: 100px;

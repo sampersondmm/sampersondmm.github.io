@@ -8,8 +8,9 @@ import SizeMenu from './SizeMenu';
 import ZoomMenu from './ZoomMenu';
 import SetupCanvas from './SetupCanvas';
 import {setCanvasSize} from '../../actions/canvasActions';
+import logo from '../../images/newLogo.png';
 
-class SidePanel extends Component {
+class TopPanel extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -84,16 +85,16 @@ class SidePanel extends Component {
         return (
             <div className='top-panel'>
                 <div className='top-panel-left'>
-                    <div className='top-panel-logo'>Logo</div>
-                    {this.handleMenus()}
+                    <img src={logo} className='top-panel-logo'/>
 
-                    {this.state.setup && (
-                        <SetupCanvas apply={this.setCanvasSize}/>
-                    )}
 
                     <PanelButton 
                         name={Common.size}
                         handleClick={this.controlMenu}
+                        isOpen={this.state.isOpen}
+                        menu={
+                            <SizeMenu/>
+                        }
                         icon={<i className="far fa-expand-arrows"></i>}
                     />
                     <PanelButton 
@@ -147,4 +148,4 @@ const mapStateToProps= (state) => {
     }
 }
 
-export default connect(mapStateToProps)(SidePanel);
+export default connect(mapStateToProps)(TopPanel);

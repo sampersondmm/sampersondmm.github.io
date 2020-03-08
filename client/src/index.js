@@ -17,7 +17,6 @@ import './css/canvas.css';
 import './css/sidePanel.css';
 import './css/topPanel.css';
 import './css/navbar.css';
-import './css/bottomPanel.css';
 import './css/colorMenu.css';
 import './css/colorPicker.css';
 import './css/setupCanvas.css';

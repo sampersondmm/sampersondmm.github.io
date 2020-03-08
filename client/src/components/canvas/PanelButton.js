@@ -12,6 +12,7 @@ class PanelButton extends Component {
 
         this.handleHover = this.handleHover.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.displayMenu = this.displayMenu.bind(this);
     }
     handleHover(isHover) {
         this.setState(state => ({
@@ -26,6 +27,11 @@ class PanelButton extends Component {
             active: true,
             isOpen: 'panel-button-active'
         }))
+    }
+    displayMenu(){
+        if(this.props.isOpen === this.props.name){
+            return this.props.menu
+        }
     }
     render(){
         return this.props.exit ? (
@@ -53,6 +59,7 @@ class PanelButton extends Component {
                 {this.state.hover && (
                     <div className='panel-tooltip'>{this.props.name}</div>
                 )}
+                {this.displayMenu()}
             </div>
         )
     }

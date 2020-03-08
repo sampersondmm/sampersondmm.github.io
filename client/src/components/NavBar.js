@@ -11,7 +11,9 @@ class NavBar extends Component {
         return (
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Navbar.Brand> 
-                    <img className='logo' src={logo}/>
+                    <div className='navbar-logo'>
+                        <img className='navbar-logo-icon' src={logo}/>
+                    </div>
                 </Navbar.Brand>
                 <Navbar.Brand> 
                     <Link className='button-link' to='/'>Box Canvas</Link>

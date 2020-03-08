@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import SidePanel from './SidePanel';
-import BottomPanel from './BottomPanel';
 import TopPanel from './TopPanel';
 import Size from '../../constants/size';
 import ShapeCanvas from './ShapeCanvas'
@@ -29,7 +28,6 @@ class Canvas extends Component {
                 canvasDisplay: {
                     width: `calc(100vw - ${width}px)`,
                     height: `calc(100vh - ${Size.topPanelWidth}px)`,
-                    border: '2px solid yellow'
                 }
             }
         return(

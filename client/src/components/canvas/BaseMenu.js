@@ -2,29 +2,54 @@ import React, {Component} from 'react';
 import Size from '../../constants/size';
 import Colors from '../../constants/colors';
 
-export const MenuConstants = {
-    sideMenu: 'Side Menu'
+export const MenuTypes = {
+    sideMenu: 'sideMenu',
+    topMenu: 'topMenu'
 }
 
 class BaseMenu extends Component {
     constructor(props) {
         super(props);
 
-        this.menuType = MenuConstants.sideMenu
+        this.menuType = MenuTypes.sideMenu
 
         this.determinePanelType = this.determinePanelType.bind(this);
         this.renderSidePanel = this.renderSidePanel.bind(this);
+        this.renderTopPanel = this.renderTopPanel.bind(this);
     }
     getAdditionalComponents(){
         //called from child
     }
     determinePanelType(){
         switch(this.menuType){
-            case MenuConstants.sideMenu:
+            case MenuTypes.sideMenu:
                 return this.renderSidePanel();
+            case MenuTypes.topMenu:
+                return this.renderTopPanel();
             default:
                 break;
         }
+    }
+    renderTopPanel(){
+        const style ={ 
+            main: {
+                left: `${Size.sidePanelWidth}px`,
+                top: `${Size.sidePanelWidth}px`,
+                height: `calc(100vh - ${Size.sidePanelWidth}px)`,
+                width: `${Size.sideMenuWidth}px`,
+                color: Colors.sideMenuGray,
+            }
+        }
+        return (
+            <div className='top-panel-menu'>
+                <div className='top-panel-menu-top'>
+                    <div className='top-panel-icon'>
+                        <i className="fal fa-window-close panel-button" onClick={this.props.closeMenu}></i>
+                    </div>
+                </div>
+                {this.getAdditionalComponents()}
+            </div>
+        )
     }
     renderSidePanel(){
         const style ={ 
@@ -34,7 +59,6 @@ class BaseMenu extends Component {
                 height: `calc(100vh - ${Size.sidePanelWidth}px)`,
                 width: `${Size.sideMenuWidth}px`,
                 color: Colors.sideMenuGray,
-                border: '2px solid red'
             }
         }
         return (
