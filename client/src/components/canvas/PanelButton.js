@@ -13,7 +13,7 @@ class PanelButton extends Component {
 
         this.handleHover = this.handleHover.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.displayMenu = this.displayMenu.bind(this);
+        this.handleTooltipEvents = this.handleTooltipEvents.bind(this);
     }
     handleHover(isHover) {
         this.setState(state => ({
@@ -21,13 +21,12 @@ class PanelButton extends Component {
             hover: isHover
         }))
     }
-    handleClick(){
-        this.props.onClick(this.props.name);
+    handleTooltipEvents(e){
+        e.stopPropagation();
+        this.handleHover(false)
     }
-    displayMenu(){
-        if(this.props.isOpen === this.props.name){
-            return this.props.menu
-        }
+    handleClick(){
+        this.props.controlMenu(this.props.name, this.props.position);
     }
     render(){
         let tooltipClass = '';
@@ -39,7 +38,26 @@ class PanelButton extends Component {
                 tooltipClass = 'panel-tooltip';
                 break 
         }
-        return this.props.exit ? (
+        return !this.props.exit ? 
+        (
+            <div 
+                className='panel-button'
+                id='panel-button'
+                onMouseEnter={() => this.handleHover(true)} 
+                onMouseLeave={() => this.handleHover(false)}
+                onClick={this.handleClick}
+            >
+                {this.props.icon}
+                {this.state.hover && (
+                    <div 
+                        className={tooltipClass}
+                        onMouseEnter={this.handleTooltipEvents}
+                        onMouseLeave={this.handleTooltipEvents}
+                    >{this.props.name}</div>
+                )}
+            </div>
+        ):
+        (
             <Link 
                 className='panel-button'
                 style={{color: 'white', textDecoration: 'none'}}
@@ -49,23 +67,12 @@ class PanelButton extends Component {
             >
                 {this.props.icon}
                 {this.state.hover && (
-                    <div className={tooltipClass}>{this.props.name}</div>
+                    <div 
+                        className={tooltipClass}
+                    >{this.props.name}</div>
                 )}
             </Link>
-        ) :
-        (
-            <div 
-                className='panel-button'
-                onMouseEnter={() => this.handleHover(true)} 
-                onMouseLeave={() => this.handleHover(false)}
-                onClick={() => this.handleClick(true)}
-            >
-                {this.props.icon}
-                {this.state.hover && (
-                    <div className={tooltipClass}>{this.props.name}</div>
-                )}
-            </div>
-        )
+        ) 
     }
 }
 

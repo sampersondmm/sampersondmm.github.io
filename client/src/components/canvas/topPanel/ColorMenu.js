@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import BaseMenu from '../BaseMenu';
 import {connect} from 'react-redux';
 import ColorPicker from '../ColorPicker';
@@ -7,7 +7,7 @@ import Size from '../../../constants/size';
 import {changeShapeColor, changeBackgroundColor} from '../../../actions/canvasActions';
 import map from 'lodash/map';
 
-class ColorMenu extends BaseMenu {
+class ColorMenu extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -47,7 +47,7 @@ class ColorMenu extends BaseMenu {
             return <div className='color-menu-color-palette-item' style={{backgroundColor: item.color}}></div>
         });
     }
-    getAdditionalComponents(){
+    render(){
         const style = {
             main: {
                 width: Size.sidePanelMenuWidth
@@ -68,8 +68,8 @@ class ColorMenu extends BaseMenu {
             color = this.state.dirty ? this.state.value : this.props.backgroundColor;
           }
         return (
-            <div className='side-panel-content'>
-                <h3 className='side-panel-title'>{this.props.name}</h3>
+            <div className='top-panel-menu-body'>
+                <h3 className='top-menu-title'>{Common.color}</h3>
                 <div className='color-menu-display' style={style.display}>
                     <div style={style.shape}></div>
                 </div>

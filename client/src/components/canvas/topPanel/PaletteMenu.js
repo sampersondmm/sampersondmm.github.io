@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import BaseMenu from '../BaseMenu';
 import {connect} from 'react-redux';
 import ColorPicker from '../ColorPicker';
@@ -8,7 +8,7 @@ import map from 'lodash/map';
 import reject from 'lodash/reject';
 import uuid from 'react-uuid';
 
-class PaletteMenu extends BaseMenu {
+class PaletteMenu extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -127,7 +127,7 @@ class PaletteMenu extends BaseMenu {
             value
         }))
     }
-    getAdditionalComponents(){
+    render(){
         const {currentColor, value, removeDisabled, emptyDisabled} = this.state,
             style = {
                 display: {
@@ -135,8 +135,8 @@ class PaletteMenu extends BaseMenu {
                 },
             };
         return (
-            <div className='side-panel-content'>
-                <h3 className='side-panel-title'>{this.props.name}</h3>
+            <div className='top-panel-menu-body'>
+                <h3 className='top-menu-title'>{Common.palette}</h3>
                 <div className='palette-menu-display' style={style.display}></div>
                 <div className='color-menu-color-palette-display'>
                     {this.renderPalette()}

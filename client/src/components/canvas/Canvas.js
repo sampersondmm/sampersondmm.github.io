@@ -27,7 +27,7 @@ class Canvas extends Component {
             style = {
                 canvasDisplay: {
                     width: `calc(100vw - ${width}px)`,
-                    height: `calc(100vh - ${Size.topPanelWidth}px)`,
+                    height: `calc(100vh - ${Size.topPanelHeight}px)`,
                 }
             }
         return(

@@ -24,10 +24,11 @@ class TopPanel extends Component {
         this.setCanvasSize = this.setCanvasSize.bind(this);
         this.handleMenus = this.handleMenus.bind(this);
     }
-    controlMenu(value){
+    controlMenu(value, position){
         this.setState(state => ({   
             ...state,
-            isOpen: value 
+            isOpen: value, 
+            position
         }))
     }
     closeMenu(){
@@ -40,24 +41,26 @@ class TopPanel extends Component {
         switch(this.state.isOpen){
             case Common.color:
                 return (
-                    <ColorMenu 
+                    <BaseTopMenu
                         name={Common.color}
-                        closeMenu={this.closeMenu} 
+                        position={this.state.position}
+                        closeMenu={this.closeMenu}
                     />
                 )
             case Common.size:
                 return (
                     <BaseTopMenu
                         name={Common.size}
+                        position={this.state.position}
                         closeMenu={this.closeMenu}
                     />
                 )
-            case Common.zoom:
+            case Common.palette:
                 return (
-                    <ZoomMenu  
-                        name={Common.zoom}
-                        closeMenu={this.closeMenu} 
-                        color={'rgb(200,200,200)'}
+                    <BaseTopMenu
+                        name={Common.palette}
+                        position={this.state.position}
+                        closeMenu={this.closeMenu}
                     />
                 )
             case Common.palette:
@@ -92,30 +95,36 @@ class TopPanel extends Component {
                     <PanelButton 
                         name={Common.size}
                         tooltipPosition={TooltipPositions.bottom}
-                        onClick={this.controlMenu}
-                        isOpen={this.state.isOpen}
+                        controlMenu={this.controlMenu}
+                        position={0}
                         icon={<i className="far fa-expand-arrows"></i>}
                     />
                     <PanelButton 
                         name={Common.shape}
                         tooltipPosition={TooltipPositions.bottom}
+                        controlMenu={this.controlMenu}
+                        position={1}
                         icon={<i className="far fa-shapes"></i>}
                     />
                     <PanelButton 
                         name={Common.color}
-                        handleClick={this.controlMenu}
                         tooltipPosition={TooltipPositions.bottom}
+                        controlMenu={this.controlMenu}
+                        position={2}
                         icon={<i className="far fa-fill"></i>}
                     />
                     <PanelButton 
                         name={Common.palette}
-                        handleClick={this.controlMenu}
                         tooltipPosition={TooltipPositions.bottom}
+                        controlMenu={this.controlMenu}
+                        position={3}
                         icon={<i className="far fa-palette"></i>}
                     />
                     <PanelButton 
                         name={Common.zoom}
                         tooltipPosition={TooltipPositions.bottom}
+                        controlMenu={this.controlMenu}
+                        position={4}
                         icon={<i className="far fa-search-plus"></i>}
                     />
                 </div>
@@ -123,14 +132,17 @@ class TopPanel extends Component {
                 <div className='top-panel-right'>
                     <PanelButton 
                         name={Common.clear}
+                        position={5}
                         icon={<i className="far fa-trash"></i>}
                     />
                     <PanelButton 
                         name={Common.save}
+                        position={6}
                         icon={<i className="far fa-download"></i>}
                     />
                     <PanelButton 
                         name={Common.exit} 
+                        position={7}
                         exit={true}
                         icon={<i className="far fa-portal-exit"></i>}
                     />
