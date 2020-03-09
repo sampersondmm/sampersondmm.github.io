@@ -12,6 +12,7 @@ import './fontAwesome/css/all.css';
 import './index.css';
 import './css/base.css';
 import './css/loginPage.css';
+import './css/panelButton.css';
 import './css/homePage.css';
 import './css/canvas.css';
 import './css/sidePanel.css';

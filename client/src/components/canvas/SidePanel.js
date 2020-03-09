@@ -3,9 +3,6 @@ import {connect} from 'react-redux';
 import Common from '../../constants/common';
 import PanelButton from './PanelButton';
 import LayerMenu from './LayerMenu';
-import PaletteMenu from './PaletteMenu';
-import SizeMenu from './SizeMenu';
-import ZoomMenu from './ZoomMenu';
 import SetupCanvas from './SetupCanvas';
 import {setCanvasSize} from '../../actions/canvasActions';
 

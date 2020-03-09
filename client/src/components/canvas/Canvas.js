@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import SidePanel from './SidePanel';
-import TopPanel from './TopPanel';
+import TopPanel from './topPanel/TopPanel';
 import Size from '../../constants/size';
-import ShapeCanvas from './ShapeCanvas'
+import ShapeCanvas from './topPanel/ShapeCanvas'
 // import CircleCanvas from './CanvasAnimation'
 
 class Canvas extends Component {

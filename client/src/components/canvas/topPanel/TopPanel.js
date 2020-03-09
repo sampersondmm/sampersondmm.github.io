@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Common from '../../constants/common';
-import PanelButton from './PanelButton';
+import Common from '../../../constants/common';
+import PanelButton from '../PanelButton';
 import ColorMenu from './ColorMenu';
 import PaletteMenu from './PaletteMenu';
 import SizeMenu from './SizeMenu';
-import ZoomMenu from './ZoomMenu';
-import SetupCanvas from './SetupCanvas';
-import {setCanvasSize} from '../../actions/canvasActions';
-import logo from '../../images/newLogo.png';
+import ZoomMenu from '../ZoomMenu';
+import SetupCanvas from '../SetupCanvas';
+import {setCanvasSize} from '../../../actions/canvasActions';
+import logo from '../../../images/newLogo.png';
+import TooltipPositions from '../../../constants/tooltips';
+import BaseTopMenu from './BaseTopMenu';
 
 class TopPanel extends Component {
     constructor(props){
@@ -45,12 +47,9 @@ class TopPanel extends Component {
                 )
             case Common.size:
                 return (
-                    <SizeMenu 
+                    <BaseTopMenu
                         name={Common.size}
-                        width={this.props.width} 
-                        height={this.props.height} 
-                        apply={this.setCanvasSize}
-                        closeMenu={this.closeMenu} 
+                        closeMenu={this.closeMenu}
                     />
                 )
             case Common.zoom:
@@ -87,32 +86,36 @@ class TopPanel extends Component {
                 <div className='top-panel-left'>
                     <img src={logo} className='top-panel-logo'/>
 
+                    {this.handleMenus()}
+
 
                     <PanelButton 
                         name={Common.size}
-                        handleClick={this.controlMenu}
+                        tooltipPosition={TooltipPositions.bottom}
+                        onClick={this.controlMenu}
                         isOpen={this.state.isOpen}
-                        menu={
-                            <SizeMenu/>
-                        }
                         icon={<i className="far fa-expand-arrows"></i>}
                     />
                     <PanelButton 
                         name={Common.shape}
+                        tooltipPosition={TooltipPositions.bottom}
                         icon={<i className="far fa-shapes"></i>}
                     />
                     <PanelButton 
                         name={Common.color}
                         handleClick={this.controlMenu}
+                        tooltipPosition={TooltipPositions.bottom}
                         icon={<i className="far fa-fill"></i>}
                     />
                     <PanelButton 
                         name={Common.palette}
                         handleClick={this.controlMenu}
+                        tooltipPosition={TooltipPositions.bottom}
                         icon={<i className="far fa-palette"></i>}
                     />
                     <PanelButton 
                         name={Common.zoom}
+                        tooltipPosition={TooltipPositions.bottom}
                         icon={<i className="far fa-search-plus"></i>}
                     />
                 </div>

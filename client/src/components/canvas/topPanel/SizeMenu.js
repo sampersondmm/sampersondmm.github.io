@@ -1,13 +1,14 @@
-import React from 'react';
-import BaseMenu, { MenuTypes } from './BaseMenu';
+import React, {Component} from 'react';
+import BaseMenu, { MenuTypes } from '../BaseMenu';
 import {connect} from 'react-redux';
-import ColorPicker from './ColorPicker';
-import Common from '../../constants/common';
+import ColorPicker from '../ColorPicker';
+import Common from '../../../constants/common';
 import {Button, InputGroup, Form, FormControl} from 'react-bootstrap';
-import Size from '../../constants/size';
-import {changeShapeColor, changeBackgroundColor} from '../../actions/canvasActions';
+import Size from '../../../constants/size';
+import {changeShapeColor, changeBackgroundColor} from '../../../actions/canvasActions';
+import BaseTopMenu from './BaseTopMenu';
 
-class SizeMenu extends BaseMenu {
+class SizeMenu extends Component {
     constructor(props){
         super(props);
         this.menuType = MenuTypes.topMenu
@@ -47,7 +48,7 @@ class SizeMenu extends BaseMenu {
             height
         }))
     }
-    getAdditionalComponents(){
+    render(){
         let color = null;
         const style = {
             main: {

@@ -1,10 +1,10 @@
 import React from 'react';
-import BaseMenu from './BaseMenu';
+import BaseMenu from '../BaseMenu';
 import {connect} from 'react-redux';
-import ColorPicker from './ColorPicker';
-import Common from '../../constants/common';
-import Size from '../../constants/size';
-import {changeShapeColor, changeBackgroundColor} from '../../actions/canvasActions';
+import ColorPicker from '../ColorPicker';
+import Common from '../../../constants/common';
+import Size from '../../../constants/size';
+import {changeShapeColor, changeBackgroundColor} from '../../../actions/canvasActions';
 import map from 'lodash/map';
 
 class ColorMenu extends BaseMenu {

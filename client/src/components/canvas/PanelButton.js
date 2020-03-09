@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Common from '../../constants/common';
 import {Link} from 'react-router-dom';
+import TooltipPositions from '../../constants/tooltips';
 
 class PanelButton extends Component {
     constructor(props){
@@ -20,13 +21,8 @@ class PanelButton extends Component {
             hover: isHover
         }))
     }
-    handleClick(name){
-        let {active} = this.state;
-        this.setState(state => ({
-            ...state,
-            active: true,
-            isOpen: 'panel-button-active'
-        }))
+    handleClick(){
+        this.props.onClick(this.props.name);
     }
     displayMenu(){
         if(this.props.isOpen === this.props.name){
@@ -34,9 +30,18 @@ class PanelButton extends Component {
         }
     }
     render(){
+        let tooltipClass = '';
+        switch(this.props.tooltipPosition){
+            case TooltipPositions.bottom:
+                tooltipClass = 'panel-tooltip-bottom';
+                break;
+            default:
+                tooltipClass = 'panel-tooltip';
+                break 
+        }
         return this.props.exit ? (
             <Link 
-                className={this.state.hover ? 'panel-button-active' : 'panel-button'}
+                className='panel-button'
                 style={{color: 'white', textDecoration: 'none'}}
                 onMouseEnter={() => this.handleHover(true)} 
                 onMouseLeave={() => this.handleHover(false)}
@@ -44,22 +49,21 @@ class PanelButton extends Component {
             >
                 {this.props.icon}
                 {this.state.hover && (
-                    <div className='panel-tooltip'>{this.props.name}</div>
+                    <div className={tooltipClass}>{this.props.name}</div>
                 )}
             </Link>
         ) :
         (
             <div 
-            className={this.state.hover ? 'panel-button-active' : 'panel-button'}
+                className='panel-button'
                 onMouseEnter={() => this.handleHover(true)} 
                 onMouseLeave={() => this.handleHover(false)}
-                onClick={() => this.props.handleClick(this.props.name)}  
+                onClick={() => this.handleClick(true)}
             >
                 {this.props.icon}
                 {this.state.hover && (
-                    <div className='panel-tooltip'>{this.props.name}</div>
+                    <div className={tooltipClass}>{this.props.name}</div>
                 )}
-                {this.displayMenu()}
             </div>
         )
     }

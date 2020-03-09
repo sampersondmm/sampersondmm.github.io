@@ -43,8 +43,8 @@ class BaseMenu extends Component {
         return (
             <div className='top-panel-menu'>
                 <div className='top-panel-menu-top'>
-                    <div className='top-panel-icon'>
-                        <i className="fal fa-window-close panel-button" onClick={this.props.closeMenu}></i>
+                    <div className='top-panel-icon' onClick={this.props.closeMenu}>
+                        <i className="fal fa-window-close panel-button"></i>
                     </div>
                 </div>
                 {this.getAdditionalComponents()}
@@ -64,7 +64,7 @@ class BaseMenu extends Component {
         return (
             <div className='side-panel-menu' style={style.main}>
                 <div className='side-panel-icon'>
-                    <i className="fal fa-window-close panel-button" onClick={this.props.closeMenu}></i>
+                    <i className="fal fa-window-close panel-button"></i>
                 </div>
                 {this.getAdditionalComponents()}
             </div>
