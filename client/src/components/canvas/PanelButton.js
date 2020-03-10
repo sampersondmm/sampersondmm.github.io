@@ -26,7 +26,11 @@ class PanelButton extends Component {
         this.handleHover(false)
     }
     handleClick(){
-        this.props.controlMenu(this.props.name, this.props.position);
+        if(this.props.type === Common.topPanel){
+            this.props.controlMenu(this.props.name, this.props.position);
+        } else if (this.props.type === Common.sidePanel){
+            this.props.controlMenu(this.props.name);
+        }
     }
     render(){
         let tooltipClass = '';

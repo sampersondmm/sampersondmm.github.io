@@ -17,6 +17,7 @@ class SidePanel extends Component {
         this.closeMenu = this.closeMenu.bind(this);
         this.setCanvasSize = this.setCanvasSize.bind(this);
         this.handleMenus = this.handleMenus.bind(this);
+        this.createMenus = this.createMenus.bind(this);
     }
     controlMenu(value){
         this.setState(state => ({   
@@ -31,18 +32,21 @@ class SidePanel extends Component {
             isOpen: false
         }))
     }
-    handleMenus(){
+    handleMenus(value){
+        this.setState(state => ({
+            ...state,
+            isOpen: value
+        }))
+    }
+    createMenus(){
         switch(this.state.isOpen){
             case Common.layers:
-                this.props.handleMenu(true);
+                this.props.handleMenu(true)
                 return (
-                    <LayerMenu 
-                        name={Common.layers}
-                        closeMenu={this.closeMenu} 
-                    />
+                    <LayerMenu/>
                 )
             default:
-                return null;
+                return;
         }
     }
     setCanvasSize(width, height){
@@ -58,7 +62,7 @@ class SidePanel extends Component {
         return (
             <div className='side-panel'>
                 
-                    {this.handleMenus()}
+                    {this.createMenus()}
 
                     {this.state.setup && (
                         <SetupCanvas apply={this.setCanvasSize}/>
@@ -66,7 +70,8 @@ class SidePanel extends Component {
 
                     <PanelButton 
                         name={Common.layers}
-                        handleClick={this.controlMenu}
+                        type={Common.sidePanel}
+                        controlMenu={this.handleMenus}
                         icon={<i className="fal fa-layer-group"></i>}
                     />
             </div>

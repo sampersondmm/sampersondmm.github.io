@@ -94,6 +94,7 @@ class TopPanel extends Component {
 
                     <PanelButton 
                         name={Common.size}
+                        type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
                         position={0}
@@ -101,6 +102,7 @@ class TopPanel extends Component {
                     />
                     <PanelButton 
                         name={Common.shape}
+                        type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
                         position={1}
@@ -108,6 +110,7 @@ class TopPanel extends Component {
                     />
                     <PanelButton 
                         name={Common.color}
+                        type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
                         position={2}
@@ -115,6 +118,7 @@ class TopPanel extends Component {
                     />
                     <PanelButton 
                         name={Common.palette}
+                        type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
                         position={3}
@@ -122,6 +126,7 @@ class TopPanel extends Component {
                     />
                     <PanelButton 
                         name={Common.zoom}
+                        type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
                         position={4}
@@ -132,16 +137,19 @@ class TopPanel extends Component {
                 <div className='top-panel-right'>
                     <PanelButton 
                         name={Common.clear}
+                        type={Common.topPanel}
                         position={5}
                         icon={<i className="far fa-trash"></i>}
                     />
                     <PanelButton 
                         name={Common.save}
+                        type={Common.topPanel}
                         position={6}
                         icon={<i className="far fa-download"></i>}
                     />
                     <PanelButton 
                         name={Common.exit} 
+                        type={Common.topPanel}
                         position={7}
                         exit={true}
                         icon={<i className="far fa-portal-exit"></i>}

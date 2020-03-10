@@ -22,7 +22,7 @@ class Canvas extends Component {
     }
     render(){
         const width = this.state.sidePanelOpen ? 
-            Size.sidePanelWidth + Size.sideMenuWidth : 
+            Size.sidePanelWidth + Size.sidePanelMenuWidth : 
             Size.sidePanelWidth,
             style = {
                 canvasDisplay: {

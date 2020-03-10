@@ -11,6 +11,8 @@ const Common = {
     save: 'Save',
     palette: 'Palette',
     layers: 'Layers',
+    topPanel: 'Top Panel',
+    sidePanel: 'Side Panel',
 }
 
 export default Common;
