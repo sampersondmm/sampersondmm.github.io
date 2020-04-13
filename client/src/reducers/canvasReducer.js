@@ -2,10 +2,10 @@ import ActionTypes from "../actions/ActionTypes";
 import uuid from 'react-uuid';
 
 const DEFAULT_STATE = {
-  width: 800,
-  height: 800,
-  backgroundColor: 'rgb(30,30,40)',
-  shapeColor: 'rgb(200,200,230)',
+  width: 400,
+  height: 400,
+  backgroundColor: 'rgb(180,180,180)',
+  shapeColor: 'rgb(20,20,20)',
   colorPalette: [
     {color: "#4771e8", uuid: "50ecc8b-23f5-dc2f-e06d-15e01b437a0"},
     {color: "#af56d8", uuid: "4dc6017-71d3-1b5-0067-4017bbe66efd"},

@@ -5,8 +5,9 @@ import ColorPicker from '../ColorPicker';
 import Common from '../../../constants/common';
 import {Button, InputGroup, Form, FormControl} from 'react-bootstrap';
 import Size from '../../../constants/size';
-import {changeShapeColor, changeBackgroundColor} from '../../../actions/canvasActions';
+import {setCanvasSize} from '../../../actions/canvasActions';
 import BaseTopMenu from './BaseTopMenu';
+import ActionTypes from '../../../actions/ActionTypes';
 
 class SizeMenu extends Component {
     constructor(props){
@@ -19,6 +20,7 @@ class SizeMenu extends Component {
             dirty: false
         }
         this.onChange = this.onChange.bind(this);
+        this.applyChanges = this.applyChanges.bind(this);
     }
     componentWillReceiveProps(nextProps){
         let {width, height} = this.state;
@@ -33,6 +35,12 @@ class SizeMenu extends Component {
             width,
             height
         }))
+    }
+    applyChanges(width, height){
+        const widthResult = Number(width),
+            heightResult = Number(height);
+        this.props.closeMenu();
+        this.props.dispatch(setCanvasSize(widthResult, heightResult));
     }
     onChange(event, type){
         const {value} = event.target;
@@ -93,7 +101,7 @@ class SizeMenu extends Component {
                         <Form.Check className='top-menu-label' type="checkbox" label="Fit to Screen" />
                     </Form.Group>
                 </Form>
-                <Button className='button' active={false} variant="primary" onClick={() => this.props.apply(width, height, false)} type="submit">
+                <Button className='button' active={false} variant="primary" onClick={() => this.applyChanges(width, height)} type="submit">
                     Apply
                 </Button>
             </div>

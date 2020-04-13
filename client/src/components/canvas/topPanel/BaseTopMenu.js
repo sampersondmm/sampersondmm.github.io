@@ -11,6 +11,10 @@ export const MenuTypes = {
     topMenu: 'topMenu'
 }
 
+/**
+ * Renders the individual top menu components individually. 
+ * Controls which menus are open 
+ */
 class BaseTopMenu extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +24,7 @@ class BaseTopMenu extends Component {
     handleMenus(){
         switch(this.props.name){
             case Common.size:
-                return <SizeMenu/>
+                return <SizeMenu closeMenu={this.props.closeMenu}/>
             case Common.color: 
                 return <ColorMenu/>
             case Common.palette: 
