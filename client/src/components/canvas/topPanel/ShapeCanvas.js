@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {event, select} from 'd3-selection';
 
 export default class ShapeCanvas extends Component {
     /**
@@ -15,29 +16,52 @@ export default class ShapeCanvas extends Component {
         this.particleCount = 150;
         this.connectionDistance = 100;
         this.shapeArr = [];
+        this.currentShape = {};
         this.lines = [];
+        this.posX = 100; 
+        this.posY = 100;
 
         this.state = {
-            posX: 0,
-            posY: 0,
+            posX: 100,
+            posY: 100,
             speedY: 0,
             speedX: 0,
             canvasWidth: 0,
-            canvasHeight: 0
+            canvasHeight: 0,
+            shapeWidth: 20,
+            shapeHeight: 20,
+            previousCanvasWidth: 0,
+            previousCanvasHeight: 0
         };
+        this.canvasEl = null;
         this.particles = [];
-        this.handlePosition = this.handlePosition.bind(this);
+        this.buildCanvas = this.buildCanvas.bind(this);
+        this.addShape = this.addShape.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
         const {width, height} = nextProps;
+        let {canvasWidth, canvasHeight, shapeWidth, shapeHeight, previousCanvasWidth, previousCanvasHeight} = this.state;
         if(width !== this.props.width || height !== this.props.height){
-            this.setState(state => ({
-                ...state,
-                canvasWidth: width,
-                canvasHeight: height
-            }))
+            const widthRatio = canvasWidth/shapeWidth,
+                heightRatio = canvasHeight/shapeHeight;
+            // shapeWidth = shapeWidth * widthRatio;
+            // shapeHeight = shapeHeight * heightRatio;
+            canvasWidth = width;
+            canvasHeight = height;
+            previousCanvasWidth = this.props.width;
+            previousCanvasHeight = this.props.height;
+
         }
+        this.setState(state => ({
+            ...state,
+            canvasWidth,
+            canvasHeight,
+            shapeWidth,
+            shapeHeight,
+            previousCanvasWidth,
+            previousCanvasHeight
+        }))
     }
 
     /**
@@ -58,17 +82,57 @@ export default class ShapeCanvas extends Component {
             backgroundColor: this.props.backgroundColor
         }));
         window.addEventListener('resize', this.resize);
+        this.buildCanvas();
     }
 
-    handlePosition(x, y){
-        const rect = document.getElementById('canvas').getBoundingClientRect(),
-            posX = x - rect.left,
-            posY = y - rect.top;
-        this.setState(state => ({
-            ...state,
-            posX,
-            posY
-        }))
+    moveShape(index, arr){
+        const canvasElement = document.getElementById('canvas').getBoundingClientRect();
+        select(this.node)
+            .select('.stamp')
+            .attr('x', () => event.x - canvasElement.left)
+            .attr('y', () => event.y - canvasElement.top)
+        this.shape.posX = event.x - canvasElement.left;
+        this.shape.posY = event.y - canvasElement.top;
+    }
+
+    buildCanvas(){
+        this.shape = {
+            width: 20,
+            height: 20,
+            posX: 100, 
+            posY: 100
+        };
+        select(this.node)
+            .selectAll('rect')
+            .data([this.shape])
+            .enter()
+            .append('rect')
+            .attr('class', 'stamp')
+            .attr('fill', 'black')
+            .attr('width', obj => obj.width)
+            .attr('height', obj => obj.height)
+            .attr('x', obj => obj.posX)
+            .attr('y', obj => obj.posY)
+            .attr('transform', obj => `translate(-${obj.width / 2}, -${obj.height / 2})`)
+
+        select(this.node)
+            .on('mousemove', (obj, index, arr) => this.moveShape(index, arr))
+            .on('click', (obj, index, arr) => this.addShape(index, arr))
+    }
+
+    addShape(){
+        this.shapeArr.push(this.shape)
+
+        select(this.node)
+            .selectAll('rect')
+            .data(this.shapeArr)
+            .enter()
+            .append('rect')
+            .attr('fill', 'black')
+            .attr('width', obj => obj.width)
+            .attr('height', obj => obj.height)
+            .attr('x', obj => obj.posX)
+            .attr('y', obj => obj.posY)
     }
 
     render() {
@@ -79,24 +143,10 @@ export default class ShapeCanvas extends Component {
                 height: `${canvasHeight}px`,
                 backgroundColor: this.props.backgroundColor,
                 position: 'relative'
-            },
-            shape: {
-                width: '10px',
-                height: '10px',
-                backgroundColor: 'black',
-                position: 'absolute',
-                top: `${posY - 5}px`,
-                left: `${posX - 5}px`
             }
         }
         return (
-            <div 
-                id='canvas'
-                style={style.main} 
-                onMouseMove={({clientX: x, clientY: y}) => this.handlePosition(x, y)}
-            >
-                <div style={style.shape}></div>
-            </div>
+            <svg style={style.main} id='canvas' ref={node => (this.node = node)}/>
         );
     }
 }
