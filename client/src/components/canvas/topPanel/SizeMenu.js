@@ -24,11 +24,11 @@ class SizeMenu extends Component {
     }
     componentWillReceiveProps(nextProps){
         let {width, height} = this.state;
-        if(nextProps.width !== this.props.width){
-            width = nextProps.width
+        if(nextProps.canvasWidth !== this.props.canvasWidth){
+            width = nextProps.canvasWidth
         } 
-        if(nextProps.height !== this.props.height){
-            height = nextProps.height;
+        if(nextProps.canvasHeight !== this.props.canvasHeight){
+            height = nextProps.canvasHeight;
         }
         this.setState(state => ({
             ...state,
@@ -57,27 +57,12 @@ class SizeMenu extends Component {
         }))
     }
     render(){
-        let color = null;
-        const style = {
-            main: {
-                width: Size.sidePanelMenuWidth
-            },
-            display: {
-            },
-            shape: {
-                width: '50%',
-                height: '50%',
-                backgroundColor: `${this.props.backgroundColor}`
-            }
-          },
-          width = this.state.width ? this.state.width : this.props.width,
-          height = this.state.height ? this.state.height : this.props.height;
-
-          if(this.state.status === 'shape'){
-            color = this.state.dirty ? this.state.value : this.props.shapeColor;
-          } else {
-            color = this.state.dirty ? this.state.value : this.props.backgroundColor;
-          }
+        const {width, height} = this.state, 
+            style = {
+                main: {
+                    width: Size.sidePanelMenuWidth
+                },
+            };
         return (
             <div className='top-panel-menu-body'>
                 <h3 className='top-menu-title'>{Common.size}</h3>
@@ -87,12 +72,12 @@ class SizeMenu extends Component {
                 <Form>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label className='top-menu-label'>Width</Form.Label>
-                        <Form.Control onChange={event => this.onChange(event, 'width')} type="number" value={width} placeholder="Width" />
+                        <Form.Control onChange={event => this.onChange(event, 'width')} type="number" value={width || this.props.canvasWidth} placeholder="Width" />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label className='top-menu-label'>Height</Form.Label>
-                        <Form.Control onChange={event => this.onChange(event, 'height')} type="number" value={height} placeholder="Height" />
+                        <Form.Control onChange={event => this.onChange(event, 'height')} type="number" value={height || this.props.canvasHeight} placeholder="Height" />
                     </Form.Group>
                     <Form.Group controlId="formBasicCheckbox">
                         <Form.Check className='top-menu-label' type="checkbox" label="Use Default" />
@@ -101,7 +86,7 @@ class SizeMenu extends Component {
                         <Form.Check className='top-menu-label' type="checkbox" label="Fit to Screen" />
                     </Form.Group>
                 </Form>
-                <Button className='button' active={false} variant="primary" onClick={() => this.applyChanges(width, height)} type="submit">
+                <Button className='button' active={false} variant="primary" onClick={() => this.applyChanges(width || this.props.canvasWidth, height || this.props.canvasHeight)} type="submit">
                     Apply
                 </Button>
             </div>
@@ -110,12 +95,12 @@ class SizeMenu extends Component {
 }
 
 const mapStateToProps = state => {
-    const {backgroundColor, shapeColor, width, height} = state.canvas;
+    const {backgroundColor, shapeColor, canvasWidth, canvasHeight} = state.canvas;
     return {
         ...state,
         shapeColor,
-        width,
-        height,
+        canvasWidth,
+        canvasHeight,
         backgroundColor
     }
 }

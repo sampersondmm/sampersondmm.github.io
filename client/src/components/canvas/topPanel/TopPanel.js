@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Common from '../../../constants/common';
 import PanelButton from '../PanelButton';
-import ColorMenu from './ColorMenu';
 import PaletteMenu from './PaletteMenu';
 import SizeMenu from './SizeMenu';
 import ZoomMenu from '../ZoomMenu';
@@ -21,7 +20,7 @@ class TopPanel extends Component {
         }
         this.controlMenu = this.controlMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
-        this.setCanvasSize = this.setCanvasSize.bind(this);
+        this.changeCanvasSize = this.changeCanvasSize.bind(this);
         this.handleMenus = this.handleMenus.bind(this);
     }
     controlMenu(value, position){
@@ -43,6 +42,14 @@ class TopPanel extends Component {
                 return (
                     <BaseTopMenu
                         name={Common.color}
+                        position={this.state.position}
+                        closeMenu={this.closeMenu}
+                    />
+                )
+            case Common.shape:
+                return (
+                    <BaseTopMenu
+                        name={Common.shape}
                         position={this.state.position}
                         closeMenu={this.closeMenu}
                     />
@@ -74,7 +81,7 @@ class TopPanel extends Component {
                 return null;
         }
     }
-    setCanvasSize(width, height){
+    changeCanvasSize(width, height){
         this.props.dispatch(setCanvasSize(Number(width), Number(height)))
         this.setState(state => ({
             ...state,

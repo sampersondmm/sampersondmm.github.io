@@ -1,0 +1,39 @@
+.shape-menu {
+    display: flex;
+    flex-direction: row;
+    width: 350px;
+}
+
+.shape-menu-title {
+    margin-top: 20px;
+    color: rgb(200,200,200);
+    text-align: center;
+}
+
+.nav-link {
+    color: rgb(200,200,200);
+}
+.nav-link:hover {
+    color: rgb(200,200,200);
+}
+
+.shape-menu-type-display {
+    height: 100px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.shape-menu-type-square {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.shape-menu-type-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}

@@ -3,6 +3,7 @@ import Size from '../../../constants/size';
 import Colors from '../../../constants/colors';
 import SizeMenu from './SizeMenu';
 import ColorMenu from './ColorMenu';
+import ShapeMenu from './ShapeMenu';
 import PaletteMenu from './PaletteMenu';
 import Common from '../../../constants/common';
 
@@ -25,6 +26,8 @@ class BaseTopMenu extends Component {
         switch(this.props.name){
             case Common.size:
                 return <SizeMenu closeMenu={this.props.closeMenu}/>
+            case Common.shape:
+                return <ShapeMenu/>
             case Common.color: 
                 return <ColorMenu/>
             case Common.palette: 

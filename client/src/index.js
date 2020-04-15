@@ -23,6 +23,7 @@ import './css/colorPicker.css';
 import './css/setupCanvas.css';
 import './css/sizeMenu.css';
 import './css/paletteMenu.css';
+import './css/shapeMenu.css';
 
 export const store = createStore(
     rootReducer,

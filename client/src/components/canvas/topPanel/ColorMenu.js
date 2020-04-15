@@ -53,12 +53,13 @@ class ColorMenu extends Component {
                 width: Size.sidePanelMenuWidth
             },
             display: {
-                backgroundColor: `${this.props.backgroundColor}`
+                backgroundColor: this.props.backgroundColor
             },
             shape: {
-                width: '50%',
-                height: '50%',
-                backgroundColor: `${this.props.shapeColor}`
+                width: '60px',
+                height: '60px',
+                backgroundColor: this.props.shapeColor,
+                borderRadius: this.props.shapeType === Common.square ? '0' : '50%'
             }
           };
           let color = null;
@@ -108,11 +109,12 @@ class ColorMenu extends Component {
 }
 
 const mapStateToProps = state => {
-    const {backgroundColor, shapeColor, colorPalette} = state.canvas;
+    const {backgroundColor, shapeColor, shapeType, colorPalette} = state.canvas;
     return {
         ...state,
         shapeColor,
         backgroundColor,
+        shapeType,
         colorPalette
     }
 }

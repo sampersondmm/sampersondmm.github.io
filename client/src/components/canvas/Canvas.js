@@ -39,10 +39,14 @@ class Canvas extends Component {
                     />
                     <div className='canvas-display-inner' style={style.canvasDisplay}>
                         <ShapeCanvas 
-                            width={this.props.width}
-                            height={this.props.height}
+                            canvasWidth={this.props.canvasWidth}
+                            canvasHeight={this.props.canvasHeight}
                             backgroundColor={this.props.backgroundColor}
                             shapeColor={this.props.shapeColor}
+                            shapeType={this.props.shapeType}
+                            shapeWidth={this.props.shapeWidth}
+                            shapeHeight={this.props.shapeHeight}
+                            shapeRadius={this.props.shapeRadius}
                         />
                     </div>
                 </div>
@@ -52,13 +56,17 @@ class Canvas extends Component {
 }
 
 const mapStateToProps = state => {
-    const {width, height, backgroundColor, shapeColor} = state.canvas;
+    const {canvasWidth, canvasHeight, backgroundColor, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = state.canvas;
     return {
         ...state,
-        width,
-        height,
+        canvasWidth,
+        canvasHeight,
         backgroundColor,
         shapeColor,
+        shapeWidth,
+        shapeHeight,
+        shapeRadius,
+        shapeType,
     }
 }
 

@@ -1,11 +1,19 @@
 import ActionTypes from './ActionTypes';
 
-const setCanvasSize = (width, height) => {
+const setCanvasSize = (canvasWidth, canvasHeight) => {
     return {
         type: ActionTypes.SET_CANVAS_SIZE,
         payload: {
-            width,
-            height
+            canvasWidth,
+            canvasHeight
+        }
+    }
+},
+changeShapeType = type => {
+    return {
+        type: ActionTypes.CHANGE_SHAPE_TYPE,
+        payload: {
+            shapeType: type
         }
     }
 },
@@ -38,4 +46,4 @@ removeColorFromPalette = newColorPalette => {
     }
 };
 
-export {setCanvasSize, changeShapeColor, changeBackgroundColor, addColorToPalette, removeColorFromPalette};
+export {setCanvasSize, changeShapeType, changeShapeColor, changeBackgroundColor, addColorToPalette, removeColorFromPalette};

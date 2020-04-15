@@ -1,11 +1,16 @@
 import ActionTypes from "../actions/ActionTypes";
+import Common from '../constants/common';
 import uuid from 'react-uuid';
 
 const DEFAULT_STATE = {
-  width: 400,
-  height: 400,
+  canvasWidth: 400,
+  canvasHeight: 400,
   backgroundColor: 'rgb(180,180,180)',
   shapeColor: 'rgb(20,20,20)',
+  shapeType: Common.square,
+  shapeWidth: 20,
+  shapeHeight: 20,
+  shapeRadius: 10,
   colorPalette: [
     {color: "#4771e8", uuid: "50ecc8b-23f5-dc2f-e06d-15e01b437a0"},
     {color: "#af56d8", uuid: "4dc6017-71d3-1b5-0067-4017bbe66efd"},
@@ -21,8 +26,13 @@ const sidePanel = (state = DEFAULT_STATE, action = {}) => {
     case ActionTypes.SET_CANVAS_SIZE:
       return {
         ...state,
-        width: payload.width,
-        height: payload.height 
+        canvasWidth: payload.canvasWidth,
+        canvasHeight: payload.canvasHeight 
+      }
+    case ActionTypes.CHANGE_SHAPE_TYPE: 
+      return {
+        ...state,
+        shapeType: payload.shapeType
       }
     case ActionTypes.CHANGE_SHAPE_COLOR:
       return {
