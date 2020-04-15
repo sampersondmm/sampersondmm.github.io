@@ -37,21 +37,22 @@ export default class ShapeCanvas extends Component {
         this.particles = [];
         this.buildCanvas = this.buildCanvas.bind(this);
         this.addShape = this.addShape.bind(this);
+        this.changeShapeColor = this.changeShapeColor.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
-        const {width, height} = nextProps;
+        const {width, height, shapeColor} = nextProps;
         let {canvasWidth, canvasHeight, shapeWidth, shapeHeight, previousCanvasWidth, previousCanvasHeight} = this.state;
         if(width !== this.props.width || height !== this.props.height){
             const widthRatio = canvasWidth/shapeWidth,
                 heightRatio = canvasHeight/shapeHeight;
-            // shapeWidth = shapeWidth * widthRatio;
-            // shapeHeight = shapeHeight * heightRatio;
             canvasWidth = width;
             canvasHeight = height;
             previousCanvasWidth = this.props.width;
             previousCanvasHeight = this.props.height;
-
+        }
+        if(shapeColor !== this.props.shapeColor){
+            this.changeShapeColor(shapeColor)
         }
         this.setState(state => ({
             ...state,
@@ -85,30 +86,36 @@ export default class ShapeCanvas extends Component {
         this.buildCanvas();
     }
 
-    moveShape(index, arr){
+    moveShape(){
         const canvasElement = document.getElementById('canvas').getBoundingClientRect();
+        const node = select(this.node)
+            .select('.stamp'),
+            nodeWidth = node.attr('width'),
+            nodeHeight = node.attr('height');
+
         select(this.node)
             .select('.stamp')
             .attr('x', () => event.x - canvasElement.left)
             .attr('y', () => event.y - canvasElement.top)
-        this.shape.posX = event.x - canvasElement.left;
-        this.shape.posY = event.y - canvasElement.top;
+        this.currentShape.posX = event.x - canvasElement.left - (nodeWidth/2);
+        this.currentShape.posY = event.y - canvasElement.top - (nodeHeight/2);
     }
 
     buildCanvas(){
-        this.shape = {
+        this.currentShape = {
             width: 20,
             height: 20,
             posX: 100, 
-            posY: 100
+            posY: 100,
+            color: this.props.shapeColor
         };
         select(this.node)
             .selectAll('rect')
-            .data([this.shape])
+            .data([this.currentShape])
             .enter()
             .append('rect')
             .attr('class', 'stamp')
-            .attr('fill', 'black')
+            .attr('fill', obj => obj.color)
             .attr('width', obj => obj.width)
             .attr('height', obj => obj.height)
             .attr('x', obj => obj.posX)
@@ -116,23 +123,31 @@ export default class ShapeCanvas extends Component {
             .attr('transform', obj => `translate(-${obj.width / 2}, -${obj.height / 2})`)
 
         select(this.node)
-            .on('mousemove', (obj, index, arr) => this.moveShape(index, arr))
+            .on('mousemove', () => this.moveShape())
             .on('click', (obj, index, arr) => this.addShape(index, arr))
     }
 
     addShape(){
-        this.shapeArr.push(this.shape)
+        this.shapeArr.push(this.currentShape)
 
         select(this.node)
             .selectAll('rect')
             .data(this.shapeArr)
             .enter()
             .append('rect')
-            .attr('fill', 'black')
+            .attr('class', 'shape')
+            .attr('fill', obj => obj.color)
             .attr('width', obj => obj.width)
             .attr('height', obj => obj.height)
             .attr('x', obj => obj.posX)
             .attr('y', obj => obj.posY)
+    }
+
+    changeShapeColor(newColor){
+        select(this.node)
+            .selectAll('.stamp')
+            .attr('fill', newColor)
+        this.currentShape.color = newColor;
     }
 
     render() {
