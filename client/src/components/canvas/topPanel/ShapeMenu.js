@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import BaseMenu from '../BaseMenu';
 import {connect} from 'react-redux';
-import ColorPicker from '../ColorPicker';
 import Common from '../../../constants/common';
 import Size from '../../../constants/size';
-import {changeShapeColor, changeShapeType, changeBackgroundColor} from '../../../actions/canvasActions';
+import {changeShapeColor, changeShapeWidth, changeShapeHeight, changeShapeRadius, changeShapeType, changeBackgroundColor} from '../../../actions/canvasActions';
 import {Tabs, Tab} from 'react-bootstrap';
 import map from 'lodash/map';
 
@@ -51,6 +50,20 @@ class ShapeMenu extends Component {
     }
     toggleShapeType(type){
         this.props.dispatch(changeShapeType(type))
+    }
+    changeDimensions(attribute, plus){
+        if(attribute === Common.width){
+            const newWidth = plus ? this.props.shapeWidth + 5 : this.props.shapeWidth - 5;
+            this.props.dispatch(changeShapeWidth(newWidth))
+        }
+        if(attribute === Common.height){
+            const newHeight = plus ? this.props.shapeHeight + 5 : this.props.shapeHeight - 5;
+            this.props.dispatch(changeShapeHeight(newHeight))
+        }
+        if(attribute === Common.radius){
+            const newRadius = plus ? this.props.shapeRadius + 5 : this.props.shapeRadius - 5;
+            this.props.dispatch(changeShapeRadius(newRadius))
+        }
     }
     render(){
         const style = {
@@ -99,18 +112,45 @@ class ShapeMenu extends Component {
                         className='shape-menu-tabs'
                     >
                         <h3 className='shape-menu-title'>{Common.size}</h3>
-                        <div className='shape-menu-type-display' style={{backgroundColor: this.props.backgroundColor}}>
-                            <div 
-                                className={this.props.shapeType === Common.square ? 'shape-menu-type-square' : 'shape-menu-type-circle'} 
-                                style={style.shape}
-                                onClick={() => this.toggleShapeType(Common.square)}
-                            ></div>
+                        <div className='shape-menu-size'>
+                            {this.props.shapeType === Common.square && (
+                                <div className='shape-menu-size-row'>
+                                    <div className='shape-menu-size-label'>{Common.width}</div>
+                                    <div className='shape-menu-size-input-wrap'>
+                                        <i className="far fa-minus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.width, false)}></i>
+                                        <input className='shape-menu-size-input' value={this.props.shapeWidth}/>
+                                        <i className="far fa-plus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.width, true)}></i>
+                                    </div>
+                                </div>
+                            )}
+                            {this.props.shapeType === Common.square && (
+                                <div className='shape-menu-size-row'>
+                                    <div className='shape-menu-size-label'>{Common.height}</div>
+                                    <div className='shape-menu-size-input-wrap'>
+                                        <i className="far fa-minus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.height, false)}></i>
+                                        <input className='shape-menu-size-input' value={this.props.shapeHeight}/>
+                                        <i className="far fa-plus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.height, true)}></i>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            {this.props.shapeType === Common.circle && (
+                                <div className='shape-menu-size-row'>
+                                    <div className='shape-menu-size-label'>{Common.radius}</div>
+                                    <div className='shape-menu-size-input-wrap'>
+                                        <i className="far fa-minus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.radius, false)}></i>
+                                        <input className='shape-menu-size-input' value={this.props.shapeRadius}/>
+                                        <i className="far fa-plus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.radius, true)}></i>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </Tab>
                     <Tab    
                         eventKey={Common.rotation} 
                         title={Common.rotation}
                         className='shape-menu-tabs' 
+                        disabled={this.props.shapeType === Common.circle}
                     >
                         <h3 className='shape-menu-title'>{Common.rotation}</h3>
                     </Tab>
@@ -128,10 +168,13 @@ class ShapeMenu extends Component {
 }
 
 const mapStateToProps = state => {
-    const {backgroundColor, shapeColor, shapeType, colorPalette} = state.canvas;
+    const {backgroundColor, shapeColor, shapeWidth, shapeHeight, shapeRadius, shapeType, colorPalette} = state.canvas;
     return {
         ...state,
         shapeColor,
+        shapeWidth,
+        shapeHeight, 
+        shapeRadius,
         backgroundColor,
         shapeType,
         colorPalette
@@ -140,35 +183,3 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps)(ShapeMenu);
 
-// <div className='color-menu-display' style={style.display}>
-//                     <div style={style.shape}></div>
-//                 </div>
-//                 <div className='color-menu-option-wrap'>
-//                     <input
-//                         type='radio'
-//                         onChange={() => this.handleColorOptions(Common.shape)}
-//                         checked={this.state.status === Common.shape}
-//                         className='color-menu-option-input'
-//                     />
-//                     <div className='color-menu-option-label'>{Common.shape}</div>
-//                 </div>
-//                 <div className='color-menu-option-wrap'>
-//                     <input
-//                         type='radio'
-//                         onChange={() => this.handleColorOptions(Common.background)}
-//                         checked={this.state.status === Common.background}
-//                         className='color-menu-option-input'
-//                     />
-//                     <div  
-//                         className='color-menu-option-label'
-//                     >{Common.background}</div>
-//                 </div>
-//                 <ColorPicker 
-//                     color={color} 
-//                     colorChange={this.handleColorChange}
-//                     shapeColor={this.props.shapeColor}
-//                     backgroundColor={this.props.backgroundColor}
-//                 />
-//                 <div className='color-menu-color-palette-display'>
-//                     {this.renderPalette()}
-//                 </div>

@@ -29,6 +29,21 @@ const sidePanel = (state = DEFAULT_STATE, action = {}) => {
         canvasWidth: payload.canvasWidth,
         canvasHeight: payload.canvasHeight 
       }
+    case ActionTypes.CHANGE_SHAPE_WIDTH: 
+      return {
+        ...state,
+        shapeWidth: payload.shapeWidth
+      }
+    case ActionTypes.CHANGE_SHAPE_HEIGHT: 
+      return {
+        ...state,
+        shapeHeight: payload.shapeHeight
+      }
+    case ActionTypes.CHANGE_SHAPE_RADIUS: 
+      return {
+        ...state,
+        shapeRadius: payload.shapeRadius
+      }
     case ActionTypes.CHANGE_SHAPE_TYPE: 
       return {
         ...state,

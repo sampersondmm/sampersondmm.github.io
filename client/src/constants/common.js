@@ -17,7 +17,10 @@ const Common = {
     rotation: 'Rotation',
     border: 'Border',
     square: 'Square',
-    circle: 'Circle'
+    circle: 'Circle',
+    width: 'Width',
+    height: 'Height',
+    radius: 'Radius'
 }
 
 export default Common;

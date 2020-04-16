@@ -25,6 +25,30 @@ changeShapeColor = color => {
         }
     }
 },
+changeShapeWidth = width => {
+    return {
+        type: ActionTypes.CHANGE_SHAPE_WIDTH,
+        payload: {
+            shapeWidth: width
+        }
+    }
+},
+changeShapeHeight = height => {
+    return {
+        type: ActionTypes.CHANGE_SHAPE_HEIGHT,
+        payload: {
+            shapeHeight: height
+        }
+    }
+},
+changeShapeRadius = radius => {
+    return {
+        type: ActionTypes.CHANGE_SHAPE_RADIUS,
+        payload: {
+            shapeRadius: radius
+        }
+    }
+},
 changeBackgroundColor = color => {
     return {
         type: ActionTypes.CHANGE_BACKGROUND_COLOR,
@@ -46,4 +70,4 @@ removeColorFromPalette = newColorPalette => {
     }
 };
 
-export {setCanvasSize, changeShapeType, changeShapeColor, changeBackgroundColor, addColorToPalette, removeColorFromPalette};
+export {setCanvasSize, changeShapeType, changeShapeColor, changeShapeWidth, changeShapeHeight, changeShapeRadius, changeBackgroundColor, addColorToPalette, removeColorFromPalette};

@@ -32,15 +32,27 @@ export default class ShapeCanvas extends Component {
         this.addShape = this.addShape.bind(this);
         this.changeShapeColor = this.changeShapeColor.bind(this);
         this.changeShapeType = this.changeShapeType.bind(this);
+        this.changeShapeWidth = this.changeShapeWidth.bind(this);
+        this.changeShapeHeight = this.changeShapeHeight.bind(this);
+        this.changeShapeRadius = this.changeShapeRadius.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
-        const {canvasWidth, canvasHeight, shapeType, shapeColor} = nextProps;
+        const {canvasWidth, canvasHeight, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = nextProps;
         if(shapeColor !== this.props.shapeColor){
             this.changeShapeColor(shapeColor)
         }
         if(shapeType !== this.props.shapeType){
             this.changeShapeType(shapeType)
+        }
+        if(shapeWidth !== this.props.shapeWidth){
+            this.changeShapeWidth(shapeWidth)
+        }
+        if(shapeHeight !== this.props.shapeHeight){
+            this.changeShapeHeight(shapeHeight)
+        }
+        if(shapeRadius !== this.props.shapeRadius){
+            this.changeShapeRadius(shapeRadius)
         }
     }
 
@@ -142,6 +154,29 @@ export default class ShapeCanvas extends Component {
                 .attr('cx', obj => obj.posX)
                 .attr('cy', obj => obj.posY)
         }
+    }
+
+    changeShapeWidth(newWidth){
+        this.currentShape.width = newWidth;
+        select(this.node)
+            .selectAll('.stamp')
+            .attr('width', newWidth)
+            .attr('transform', `translate(-${newWidth/2}, -${this.currentShape.height/2})`)
+    }
+    
+    changeShapeHeight(newHeight){
+        this.currentShape.height = newHeight;
+        select(this.node)
+            .selectAll('.stamp')
+            .attr('height', newHeight)
+            .attr('transform', `translate(-${this.currentShape.width/2}, -${newHeight/2})`)
+    }
+
+    changeShapeRadius(newRadius){
+        this.currentShape.radius = newRadius;
+        select(this.node)
+            .selectAll('.stamp')
+            .attr('r', newRadius)
     }
 
     changeShapeColor(newColor){

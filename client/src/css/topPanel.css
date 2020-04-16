@@ -27,6 +27,7 @@
 
 .top-panel-menu-top {
     display: flex;
+    position: absolute;
     justify-content: flex-end;
     width: 100%;
 }
