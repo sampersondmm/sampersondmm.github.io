@@ -21,6 +21,8 @@ export default class ShapeCanvas extends Component {
         this.lines = [];
         this.posX = 100; 
         this.posY = 100;
+        this.scalePosX = 1;
+        this.scalePosY = 1;
 
         this.state = {
             posX: 100,
@@ -35,10 +37,11 @@ export default class ShapeCanvas extends Component {
         this.changeShapeWidth = this.changeShapeWidth.bind(this);
         this.changeShapeHeight = this.changeShapeHeight.bind(this);
         this.changeShapeRadius = this.changeShapeRadius.bind(this);
+        this.changeCanvasScale = this.changeCanvasScale.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
-        const {canvasWidth, canvasHeight, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = nextProps;
+        const {canvasWidth, canvasHeight, canvasScale, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = nextProps;
         if(shapeColor !== this.props.shapeColor){
             this.changeShapeColor(shapeColor)
         }
@@ -53,6 +56,9 @@ export default class ShapeCanvas extends Component {
         }
         if(shapeRadius !== this.props.shapeRadius){
             this.changeShapeRadius(shapeRadius)
+        }
+        if(canvasScale !== this.props.canvasScale){
+            this.changeCanvasScale(canvasScale)
         }
     }
 
@@ -84,19 +90,21 @@ export default class ShapeCanvas extends Component {
             shapeWidth = node.attr('width'); 
             shapeHeight = node.attr('height'); 
 
-            select(this.node)
-                .select('.stamp')
-                .attr('x', () => event.x - canvasElement.left)
-                .attr('y', () => event.y - canvasElement.top)
-                this.currentShape.posX = event.x - canvasElement.left - (shapeWidth/2);
-                this.currentShape.posY = event.y - canvasElement.top - (shapeHeight/2);
+
+            node
+                .attr('x', () => (event.x - canvasElement.left) * this.scalePosX)
+                .attr('y', () => (event.y - canvasElement.top) * this.scalePosY);
+
+            this.currentShape.posX = (event.x - canvasElement.left);
+            this.currentShape.posY = (event.y - canvasElement.top);
         } else {
             select(this.node)
                 .select('.stamp')
-                .attr('cx', () => event.x - canvasElement.left)
-                .attr('cy', () => event.y - canvasElement.top)
-                this.currentShape.posX = event.x - canvasElement.left;
-                this.currentShape.posY = event.y - canvasElement.top;
+                .attr('cx', () => (event.x - canvasElement.left) * this.scalePosX)
+                .attr('cy', () => (event.y - canvasElement.top) * this.scalePosY);
+
+            this.currentShape.posX = (event.x - canvasElement.left);
+            this.currentShape.posY = (event.y - canvasElement.top);
         }
     }
 
@@ -107,6 +115,8 @@ export default class ShapeCanvas extends Component {
             posX: 100, 
             posY: 100,
             type: Common.square,
+            border: 0,
+            rotation: 0,
             color: this.props.shapeColor
         };
         select(this.node)
@@ -125,10 +135,22 @@ export default class ShapeCanvas extends Component {
         select(this.node)
             .on('mousemove', () => this.moveShape())
             .on('click', (obj, index, arr) => this.addShape(index, arr))
+
+        // select(this.node)
+        //     .append('path')
+        //     .attr('d', 'M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80')
+        //     .attr('stroke', 'black')
+        //     .attr('fill','transparent')
     }
 
     addShape(){
         this.shapeArr.push({...this.currentShape});
+
+        this.props.addShape(this.currentShape)
+
+        const posX = select(this.node).selectAll('.stamp').attr('x'),
+            posY = select(this.node).selectAll('.stamp').attr('y'),
+            transform = select(this.node).selectAll('.stamp').attr('transform');
         
         if(this.props.shapeType === Common.square){
             select(this.node)
@@ -140,8 +162,10 @@ export default class ShapeCanvas extends Component {
                 .attr('fill', obj => obj.color)
                 .attr('width', obj => obj.width)
                 .attr('height', obj => obj.height)
-                .attr('x', obj => obj.posX)
-                .attr('y', obj => obj.posY)
+                .attr('x', posX)
+                .attr('y', posY)
+                .attr('transform', transform);
+
         } else {
             select(this.node)
                 .selectAll('.shape')
@@ -151,8 +175,9 @@ export default class ShapeCanvas extends Component {
                 .attr('class', 'shape')
                 .attr('fill', obj => obj.color)
                 .attr('r', obj => obj.radius)
-                .attr('cx', obj => obj.posX)
-                .attr('cy', obj => obj.posY)
+                .attr('cx', obj => obj.posX * this.scalePosX)
+                .attr('cy', obj => obj.posY * this.scalePosY);
+
         }
     }
 
@@ -163,7 +188,14 @@ export default class ShapeCanvas extends Component {
             .attr('width', newWidth)
             .attr('transform', `translate(-${newWidth/2}, -${this.currentShape.height/2})`)
     }
-    
+
+    changeCanvasScale(newScale) {
+        select(this.node)
+            .attr('transform', `scale(${newScale})`)
+        this.scalePosX = this.props.canvasWidth / (this.props.canvasWidth * newScale);
+        this.scalePosY = this.props.canvasHeight / (this.props.canvasHeight * newScale);
+    }
+
     changeShapeHeight(newHeight){
         this.currentShape.height = newHeight;
         select(this.node)
@@ -212,9 +244,9 @@ export default class ShapeCanvas extends Component {
                 .attr('fill', obj => obj.color)
                 .attr('width', obj => obj.width)
                 .attr('height', obj => obj.height)
-                .attr('x', obj => obj.posX)
-                .attr('y', obj => obj.posY)
-                .attr('transform', obj => `translate(-${obj.width / 2}, -${obj.height / 2})`)
+                .attr('x', obj => obj.posX * this.scalePosX)
+                .attr('y', obj => obj.posY * this.scalePosY)
+                // .attr('transform', obj => `translate(-${obj.width / 2}, -${obj.height / 2})`)
 
         } else {
             this.currentShape = {
@@ -231,8 +263,8 @@ export default class ShapeCanvas extends Component {
                 .attr('class', 'stamp')
                 .attr('fill', obj => obj.color)
                 .attr('r', obj => obj.radius)
-                .attr('cx', obj => obj.posX)
-                .attr('cy', obj => obj.posY)
+                .attr('cx', obj => obj.posX * this.scalePosX)
+                .attr('cy', obj => obj.posY * this.scalePosY)
         }
     }
 

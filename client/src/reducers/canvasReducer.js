@@ -6,7 +6,9 @@ const DEFAULT_STATE = {
   canvasWidth: 400,
   canvasHeight: 400,
   backgroundColor: 'rgb(180,180,180)',
+  canvasScale: 1,
   shapeColor: 'rgb(20,20,20)',
+  shapeList: [],
   shapeType: Common.square,
   shapeWidth: 20,
   shapeHeight: 20,
@@ -19,6 +21,8 @@ const DEFAULT_STATE = {
   ]
 }
 
+
+
 const sidePanel = (state = DEFAULT_STATE, action = {}) => {
   const {type, payload} = action,
     result = payload || {};
@@ -28,6 +32,17 @@ const sidePanel = (state = DEFAULT_STATE, action = {}) => {
         ...state,
         canvasWidth: payload.canvasWidth,
         canvasHeight: payload.canvasHeight 
+      }
+    case ActionTypes.ADD_SHAPE_TO_CANVAS:
+      const newShapeList = [{...payload.newShape}, ...state.shapeList];
+      return {
+        ...state,
+        shapeList: newShapeList
+      }
+    case ActionTypes.CHANGE_CANVAS_SCALE:
+      return {
+        ...state,
+        canvasScale: payload.canvasScale, 
       }
     case ActionTypes.CHANGE_SHAPE_WIDTH: 
       return {

@@ -1,0 +1,29 @@
+.zoom-menu-row {
+    height: 50px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.zoom-menu-input {
+    color:rgb(33, 37, 41);
+    background-color: white;
+    border: none;
+    padding: 7px 15px;
+    display: flex;
+    width: 100%;
+    margin: 0 10px
+}
+
+.zoom-menu-input-wrap {
+    display: flex;
+    align-items: center;
+}
+.zoom-menu-icon {
+    color:white;
+}
+.zoom-menu-label {
+    color: white;
+}

@@ -92,7 +92,7 @@ class ShapeMenu extends Component {
                         title={Common.type}
                         className='shape-menu-tabs'
                     >
-                        <h3 className='shape-menu-title'>{Common.type}</h3>
+                        <h4 className='shape-menu-title'>{Common.type}</h4>
                         <div className='shape-menu-type-display' style={{backgroundColor: this.props.backgroundColor}}>
                             <div 
                                 className='shape-menu-type-square' 
@@ -111,7 +111,7 @@ class ShapeMenu extends Component {
                         title={Common.size}
                         className='shape-menu-tabs'
                     >
-                        <h3 className='shape-menu-title'>{Common.size}</h3>
+                        <h4 className='shape-menu-title'>{Common.size}</h4>
                         <div className='shape-menu-size'>
                             {this.props.shapeType === Common.square && (
                                 <div className='shape-menu-size-row'>
@@ -152,14 +152,26 @@ class ShapeMenu extends Component {
                         className='shape-menu-tabs' 
                         disabled={this.props.shapeType === Common.circle}
                     >
-                        <h3 className='shape-menu-title'>{Common.rotation}</h3>
+                        <h4 className='shape-menu-title'>{Common.rotation}</h4>
                     </Tab>
                     <Tab 
                         eventKey={Common.border} 
                         title={Common.border}
                         className='shape-menu-tabs' 
                     >
-                        <h3 className='shape-menu-title'>{Common.border}</h3>
+                        <h4 className='shape-menu-title'>{Common.border}</h4>
+                        <div className='shape-menu-border-display' style={{backgroundColor: this.props.backgroundColor}}>
+                            <div 
+                                className='shape-menu-type-square' 
+                                style={{...style.shape, border: this.props.shapeType === Common.square ? '2px solid white' : 'none'}}
+                                onClick={() => this.toggleShapeType(Common.square)}
+                            ></div>
+                            <div 
+                                className='shape-menu-type-circle' 
+                                style={{...style.shape, border: this.props.shapeType === Common.circle ? '2px solid white' : 'none'}}
+                                onClick={() => this.toggleShapeType(Common.circle)}
+                            ></div>
+                        </div>
                     </Tab>
                 </Tabs>
             </div>

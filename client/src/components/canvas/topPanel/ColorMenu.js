@@ -17,6 +17,7 @@ class ColorMenu extends Component {
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleColorOptions = this.handleColorOptions.bind(this);
         this.renderPalette = this.renderPalette.bind(this);
+        this.selectPalleteColor = this.selectPalleteColor.bind(this);
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.colorPalette !== this.props.colorPalette){
@@ -44,8 +45,16 @@ class ColorMenu extends Component {
     }
     renderPalette(){
         return map(this.props.colorPalette, item => {
-            return <div className='color-menu-color-palette-item' style={{backgroundColor: item.color}}></div>
+            return <div className='color-menu-color-palette-item' onClick={() => this.selectPalleteColor(item)} style={{backgroundColor: item.color}}></div>
         });
+    }
+    selectPalleteColor(item){
+        const {color} = item;
+        if(this.state.status === Common.shape){
+            this.props.dispatch(changeShapeColor(color));
+        } else {
+            this.props.dispatch(changeBackgroundColor(color));
+        }
     }
     render(){
         const style = {

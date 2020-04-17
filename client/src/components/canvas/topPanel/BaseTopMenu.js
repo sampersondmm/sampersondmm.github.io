@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Size from '../../../constants/size';
 import Colors from '../../../constants/colors';
 import SizeMenu from './SizeMenu';
+import ZoomMenu from './ZoomMenu';
 import ColorMenu from './ColorMenu';
 import ShapeMenu from './ShapeMenu';
 import PaletteMenu from './PaletteMenu';
@@ -32,6 +33,8 @@ class BaseTopMenu extends Component {
                 return <ColorMenu/>
             case Common.palette: 
                 return <PaletteMenu/>
+            case Common.zoom: 
+                return <ZoomMenu/>
             default:
                 return;
         }

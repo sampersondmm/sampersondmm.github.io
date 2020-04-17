@@ -1,9 +1,0 @@
-.size-menu-display {
-    width: 200px;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(200,200,200);
-    margin: 10px 0;
-}

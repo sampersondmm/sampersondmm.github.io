@@ -21,9 +21,10 @@ import './css/navbar.css';
 import './css/colorMenu.css';
 import './css/colorPicker.css';
 import './css/setupCanvas.css';
-import './css/sizeMenu.css';
 import './css/paletteMenu.css';
 import './css/shapeMenu.css';
+import './css/zoomMenu.css';
+import './css/layerMenu.css';
 
 export const store = createStore(
     rootReducer,

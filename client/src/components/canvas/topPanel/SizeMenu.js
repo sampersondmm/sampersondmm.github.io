@@ -57,18 +57,10 @@ class SizeMenu extends Component {
         }))
     }
     render(){
-        const {width, height} = this.state, 
-            style = {
-                main: {
-                    width: Size.sidePanelMenuWidth
-                },
-            };
+        const {width, height} = this.state;
         return (
             <div className='top-panel-menu-body'>
                 <h3 className='top-menu-title'>{Common.size}</h3>
-                <div className='size-menu-display'>
-                    <div style={style.shape}></div>
-                </div>
                 <Form>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label className='top-menu-label'>Width</Form.Label>

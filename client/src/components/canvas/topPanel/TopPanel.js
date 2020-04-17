@@ -70,11 +70,12 @@ class TopPanel extends Component {
                         closeMenu={this.closeMenu}
                     />
                 )
-            case Common.palette:
+            case Common.zoom:
                 return (
-                    <PaletteMenu
-                        name={Common.palette}
-                        closeMenu={this.closeMenu} 
+                    <BaseTopMenu
+                        name={Common.zoom}
+                        position={this.state.position}
+                        closeMenu={this.closeMenu}
                     />
                 )
             default:

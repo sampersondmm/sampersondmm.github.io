@@ -9,6 +9,22 @@ const setCanvasSize = (canvasWidth, canvasHeight) => {
         }
     }
 },
+addShapeToCanvas = newShape => {
+    return {
+        type: ActionTypes.ADD_SHAPE_TO_CANVAS,
+        payload: {
+            newShape, 
+        }
+    }
+},
+changeCanvasScale = scale => {
+    return {
+        type: ActionTypes.CHANGE_CANVAS_SCALE,
+        payload: {
+            canvasScale: scale
+        }
+    }
+},
 changeShapeType = type => {
     return {
         type: ActionTypes.CHANGE_SHAPE_TYPE,
@@ -70,4 +86,4 @@ removeColorFromPalette = newColorPalette => {
     }
 };
 
-export {setCanvasSize, changeShapeType, changeShapeColor, changeShapeWidth, changeShapeHeight, changeShapeRadius, changeBackgroundColor, addColorToPalette, removeColorFromPalette};
+export {setCanvasSize, addShapeToCanvas, changeShapeType, changeShapeColor, changeShapeWidth, changeCanvasScale, changeShapeHeight, changeShapeRadius, changeBackgroundColor, addColorToPalette, removeColorFromPalette};

@@ -20,7 +20,8 @@ const Common = {
     circle: 'Circle',
     width: 'Width',
     height: 'Height',
-    radius: 'Radius'
+    radius: 'Radius',
+    zoom: 'Zoom'
 }
 
 export default Common;

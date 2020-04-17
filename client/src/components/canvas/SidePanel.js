@@ -5,19 +5,18 @@ import PanelButton from './PanelButton';
 import LayerMenu from './LayerMenu';
 import SetupCanvas from './SetupCanvas';
 import {setCanvasSize} from '../../actions/canvasActions';
+import TooltipPositions from '../../constants/tooltips';
 
 class SidePanel extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isOpen: false,
+            isOpen: true,
             setup: false
         }
         this.controlMenu = this.controlMenu.bind(this);
-        this.closeMenu = this.closeMenu.bind(this);
         this.setCanvasSize = this.setCanvasSize.bind(this);
         this.handleMenus = this.handleMenus.bind(this);
-        this.createMenus = this.createMenus.bind(this);
     }
     controlMenu(value){
         this.setState(state => ({   
@@ -25,29 +24,13 @@ class SidePanel extends Component {
             isOpen: value 
         }))
     }
-    closeMenu(){
-        this.props.handleMenu(false)
+    handleMenus(){
+        this.props.handleMenu(!this.state.isOpen);
         this.setState(state => ({
             ...state,
-            isOpen: false
+            isOpen: !state.isOpen
         }))
-    }
-    handleMenus(value){
-        this.setState(state => ({
-            ...state,
-            isOpen: value
-        }))
-    }
-    createMenus(){
-        switch(this.state.isOpen){
-            case Common.layers:
-                this.props.handleMenu(true)
-                return (
-                    <LayerMenu/>
-                )
-            default:
-                return;
-        }
+
     }
     setCanvasSize(width, height){
         this.props.dispatch(setCanvasSize(Number(width), Number(height)))
@@ -62,7 +45,11 @@ class SidePanel extends Component {
         return (
             <div className='side-panel'>
                 
-                    {this.createMenus()}
+                    {this.state.isOpen && (
+                        <LayerMenu
+                            shapeList={this.props.shapeList}
+                        />
+                    )}
 
                     {this.state.setup && (
                         <SetupCanvas apply={this.setCanvasSize}/>
@@ -71,6 +58,7 @@ class SidePanel extends Component {
                     <PanelButton 
                         name={Common.layers}
                         type={Common.sidePanel}
+                        tooltipPosition={TooltipPositions.right}
                         controlMenu={this.handleMenus}
                         icon={<i className="fal fa-layer-group"></i>}
                     />
@@ -80,11 +68,12 @@ class SidePanel extends Component {
 }
 
 const mapStateToProps= (state) => {
-    const {backgroundColor, shapeColor, width, height} = state.canvas
+    const {backgroundColor, shapeColor, shapeList, width, height} = state.canvas
     return {
         ...state,
         backgroundColor,
         shapeColor,
+        shapeList,
         width,
         height
     }

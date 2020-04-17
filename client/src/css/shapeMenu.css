@@ -25,6 +25,14 @@
     justify-content: space-evenly;
 }
 
+.shape-menu-border-display {
+    height: 100px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .shape-menu-type-square {
     width: 40px;
     height: 40px;
@@ -47,13 +55,6 @@
     flex-direction: column;
 }
 
-.shape-menu-size-row {
-    height: 50px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
 .shape-menu-size-input {
     color:rgb(33, 37, 41);
     background-color: white;
@@ -63,6 +64,15 @@
     width: 60px;
     margin: 0 10px
 }
+
+.shape-menu-size-row {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .shape-menu-size-input-wrap {
     display: flex;
     align-items: center;

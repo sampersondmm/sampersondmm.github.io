@@ -29,7 +29,7 @@ class PanelButton extends Component {
         if(this.props.type === Common.topPanel){
             this.props.controlMenu(this.props.name, this.props.position);
         } else if (this.props.type === Common.sidePanel){
-            this.props.controlMenu(this.props.name);
+            this.props.controlMenu();
         }
     }
     render(){
@@ -37,6 +37,9 @@ class PanelButton extends Component {
         switch(this.props.tooltipPosition){
             case TooltipPositions.bottom:
                 tooltipClass = 'panel-tooltip-bottom';
+                break;
+            case TooltipPositions.right:
+                tooltipClass = 'panel-tooltip-right';
                 break;
             default:
                 tooltipClass = 'panel-tooltip';

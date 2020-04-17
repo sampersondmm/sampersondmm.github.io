@@ -1,0 +1,33 @@
+.layer-menu-shape-item {
+    background-color: rgb(200,200,200);
+    padding: 10px;
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+}
+
+.layer-menu-shape-title {
+    margin-left: 5px;
+}
+.layer-menu-shape-item-square {
+    width: 20px;
+    height: 20px;
+}
+.layer-menu-shape-item-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.layer-menu-shapes {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.layer-menu-display {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
