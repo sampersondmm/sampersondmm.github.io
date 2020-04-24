@@ -41,6 +41,9 @@ class PanelButton extends Component {
             case TooltipPositions.right:
                 tooltipClass = 'panel-tooltip-right';
                 break;
+            case TooltipPositions.left:
+                tooltipClass = 'panel-tooltip-left';
+                break;
             default:
                 tooltipClass = 'panel-tooltip';
                 break 

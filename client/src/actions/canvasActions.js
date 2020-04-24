@@ -79,6 +79,12 @@ addColorToPalette = color => {
         payload: color
     }
 },
+selectShape = (itemId) => {
+    return {
+        type: ActionTypes.SELECT_SHAPE,
+        payload: itemId
+    }
+},
 removeColorFromPalette = newColorPalette => {
     return {
         type: ActionTypes.REPLACE_PALETTE,
@@ -86,4 +92,4 @@ removeColorFromPalette = newColorPalette => {
     }
 };
 
-export {setCanvasSize, addShapeToCanvas, changeShapeType, changeShapeColor, changeShapeWidth, changeCanvasScale, changeShapeHeight, changeShapeRadius, changeBackgroundColor, addColorToPalette, removeColorFromPalette};
+export {setCanvasSize, addShapeToCanvas, changeShapeType, changeShapeColor, changeShapeWidth, changeCanvasScale, changeShapeHeight, changeShapeRadius, selectShape, changeBackgroundColor, addColorToPalette, removeColorFromPalette};

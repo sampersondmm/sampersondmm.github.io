@@ -10,6 +10,8 @@ const DEFAULT_STATE = {
   shapeColor: 'rgb(20,20,20)',
   shapeList: [],
   shapeType: Common.square,
+  selectedShape: '',
+  selectShape: false,
   shapeWidth: 20,
   shapeHeight: 20,
   shapeRadius: 10,
@@ -83,6 +85,11 @@ const sidePanel = (state = DEFAULT_STATE, action = {}) => {
       return {
         ...state,
         colorPalette: payload
+      }
+    case ActionTypes.SELECT_SHAPE:
+      return {
+        ...state,
+        selectedShape: payload
       }
     default:
       return state;

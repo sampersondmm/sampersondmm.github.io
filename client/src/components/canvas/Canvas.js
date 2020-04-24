@@ -1,45 +1,78 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import SidePanel from './SidePanel';
+import RightPanel from './RightPanel';
+import LeftPanel from './LeftPanel';
 import TopPanel from './topPanel/TopPanel';
 import Size from '../../constants/size';
 import ShapeCanvas from './topPanel/ShapeCanvas'
 import { addShapeToCanvas } from '../../actions/canvasActions';
-// import CircleCanvas from './CanvasAnimation'
 
 class Canvas extends Component {
     constructor(props){
         super(props);
         this.state = {
-            sidePanelOpen: true
+            rightPanelOpen: true,
+            leftPanelOpen: false
         }
-        this.handleSideMenu = this.handleSideMenu.bind(this);
+        this.handleRightMenu = this.handleRightMenu.bind(this);
+        this.handleLeftMenu = this.handleLeftMenu.bind(this);
         this.addShape = this.addShape.bind(this);
+        this.determineWidth = this.determineWidth.bind(this);
     }
-    handleSideMenu(open){
+    handleRightMenu(){
         this.setState(state => ({
             ...state,
-            sidePanelOpen: open
+            rightPanelOpen: !state.rightPanelOpen
+        }))
+    }
+    handleLeftMenu(){
+        this.setState(state => ({
+            ...state,
+            leftPanelOpen: !state.leftPanelOpen
         }))
     }
     addShape(newShape){
         this.props.dispatch(addShapeToCanvas(newShape))
     }
+    determineWidth(){
+        const {rightPanelOpen, leftPanelOpen} = this.state;
+        let width = null;
+        if(rightPanelOpen && !leftPanelOpen){
+            width = (Size.sidePanelWidth*2) + Size.sidePanelMenuWidth;
+        }
+        if(!rightPanelOpen && leftPanelOpen){
+            width = (Size.sidePanelWidth*2)+ Size.sidePanelMenuWidth;
+        }
+        if(!rightPanelOpen && !leftPanelOpen){
+            width =  Size.sidePanelWidth * 2;
+        } 
+        if(rightPanelOpen && leftPanelOpen){
+            width = (Size.sidePanelWidth + Size.sidePanelMenuWidth) * 2;
+        }
+        return width;
+    }
     render(){
-        const width = this.state.sidePanelOpen ? 
-            Size.sidePanelWidth + Size.sidePanelMenuWidth : 
-            Size.sidePanelWidth,
+        const width = this.determineWidth(),
             style = {
                 canvasDisplay: {
+                    height: `calc(100vh - ${Size.topPanelHeight}px)`,
+                },
+                canvasDisplayInner: {
                     width: `calc(100vw - ${width}px)`,
                     height: `calc(100vh - ${Size.topPanelHeight}px)`,
+                    left: `${this.state.leftPanelOpen ? Size.sidePanelWidth + Size.sidePanelMenuWidth : Size.sidePanelWidth}px`,
+                    top: '0'
                 }
             }
         return(
             <div className='canvas-wrap'>
                 <TopPanel/>
-                <div className='canvas-display'>
-                    <div className='canvas-display-inner' style={style.canvasDisplay}>
+                <div className='canvas-display' style={style.canvasDisplay}>
+                    <LeftPanel
+                        handleMenu={this.handleLeftMenu}
+                        isOpen={this.state.leftPanelOpen}
+                    />
+                    <div className='canvas-display-inner' style={style.canvasDisplayInner}>
                         <ShapeCanvas 
                             canvasWidth={this.props.canvasWidth}
                             canvasHeight={this.props.canvasHeight}
@@ -51,10 +84,12 @@ class Canvas extends Component {
                             shapeHeight={this.props.shapeHeight}
                             shapeRadius={this.props.shapeRadius}
                             addShape={this.addShape}
+                            selectedShape={this.props.selectedShape}
                         />
                     </div>
-                    <SidePanel
-                        handleMenu={this.handleSideMenu}
+                    <RightPanel
+                        handleMenu={this.handleRightMenu}
+                        isOpen={this.state.rightPanelOpen}
                     />
                 </div>
             </div>
@@ -63,7 +98,7 @@ class Canvas extends Component {
 }
 
 const mapStateToProps = state => {
-    const {canvasWidth, canvasScale, canvasHeight, backgroundColor, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = state.canvas;
+    const {canvasWidth, canvasScale, selectedShape, canvasHeight, backgroundColor, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = state.canvas;
     return {
         ...state,
         canvasWidth,
@@ -74,6 +109,7 @@ const mapStateToProps = state => {
         shapeWidth,
         shapeHeight,
         shapeRadius,
+        selectedShape,
         shapeType,
     }
 }

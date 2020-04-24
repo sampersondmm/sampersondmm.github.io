@@ -15,7 +15,8 @@ import './css/loginPage.css';
 import './css/panelButton.css';
 import './css/homePage.css';
 import './css/canvas.css';
-import './css/sidePanel.css';
+import './css/rightPanel.css';
+import './css/leftPanel.css';
 import './css/topPanel.css';
 import './css/navbar.css';
 import './css/colorMenu.css';
@@ -25,6 +26,7 @@ import './css/paletteMenu.css';
 import './css/shapeMenu.css';
 import './css/zoomMenu.css';
 import './css/layerMenu.css';
+import './css/layerMenu2.css';
 
 export const store = createStore(
     rootReducer,

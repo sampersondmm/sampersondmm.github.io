@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {event, select} from 'd3-selection';
 import Common from '../../../constants/common';
+import uuid from 'react-uuid';
 
 export default class ShapeCanvas extends Component {
     /**
@@ -23,6 +24,7 @@ export default class ShapeCanvas extends Component {
         this.posY = 100;
         this.scalePosX = 1;
         this.scalePosY = 1;
+        this.hoverActive = false;
 
         this.state = {
             posX: 100,
@@ -30,7 +32,7 @@ export default class ShapeCanvas extends Component {
         };
         this.canvasEl = null;
         this.particles = [];
-        this.buildCanvas = this.buildCanvas.bind(this);
+        this.setupCanvas = this.setupCanvas.bind(this);
         this.addShape = this.addShape.bind(this);
         this.changeShapeColor = this.changeShapeColor.bind(this);
         this.changeShapeType = this.changeShapeType.bind(this);
@@ -38,10 +40,13 @@ export default class ShapeCanvas extends Component {
         this.changeShapeHeight = this.changeShapeHeight.bind(this);
         this.changeShapeRadius = this.changeShapeRadius.bind(this);
         this.changeCanvasScale = this.changeCanvasScale.bind(this);
+        this.selectShape = this.selectShape.bind(this);
+        this.loadShapes = this.loadShapes.bind(this);
+        this.centerStamp = this.centerStamp.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
-        const {canvasWidth, canvasHeight, canvasScale, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = nextProps;
+        const {canvasWidth, canvasHeight, canvasScale, shapeType, shapeWidth, shapeHeight, shapeRadius, selectedShape, shapeColor} = nextProps;
         if(shapeColor !== this.props.shapeColor){
             this.changeShapeColor(shapeColor)
         }
@@ -60,6 +65,12 @@ export default class ShapeCanvas extends Component {
         if(canvasScale !== this.props.canvasScale){
             this.changeCanvasScale(canvasScale)
         }
+        if(selectedShape !== this.props.selectedShape){
+            this.selectShape(selectedShape)
+        }
+        if(nextProps !== this.props){
+            this.centerStamp();
+        }
     }
 
     /**
@@ -74,13 +85,16 @@ export default class ShapeCanvas extends Component {
             backgroundColor: this.props.backgroundColor
         }));
         window.addEventListener('resize', this.resize);
-        this.buildCanvas();
+        this.setupCanvas();
     }
 
     moveShape(){
         const canvasElement = document.getElementById('canvas').getBoundingClientRect();
+        this.hoverActive = true;
         const node = select(this.node)
             .select('.stamp');
+
+        node.attr('visibility', 'visible')
 
         let shapeWidth = null,
             shapeHeight = null;
@@ -98,8 +112,7 @@ export default class ShapeCanvas extends Component {
             this.currentShape.posX = (event.x - canvasElement.left);
             this.currentShape.posY = (event.y - canvasElement.top);
         } else {
-            select(this.node)
-                .select('.stamp')
+            node
                 .attr('cx', () => (event.x - canvasElement.left) * this.scalePosX)
                 .attr('cy', () => (event.y - canvasElement.top) * this.scalePosY);
 
@@ -108,7 +121,16 @@ export default class ShapeCanvas extends Component {
         }
     }
 
-    buildCanvas(){
+    centerStamp(){
+        this.hoverActive = false;
+        select(this.node)
+            .selectAll('.stamp')
+            .attr('x', this.props.canvasWidth / 2)
+            .attr('y', this.props.canvasHeight / 2)
+    }
+
+    setupCanvas(){
+        // Default starting shape
         this.currentShape = {
             width: this.props.shapeWidth,
             height: this.props.shapeHeight,
@@ -119,6 +141,7 @@ export default class ShapeCanvas extends Component {
             rotation: 0,
             color: this.props.shapeColor
         };
+
         select(this.node)
             .selectAll('rect')
             .data([this.currentShape])
@@ -134,23 +157,52 @@ export default class ShapeCanvas extends Component {
 
         select(this.node)
             .on('mousemove', () => this.moveShape())
+            .on('mouseleave', () => this.centerStamp())
             .on('click', (obj, index, arr) => this.addShape(index, arr))
+    }
 
-        // select(this.node)
-        //     .append('path')
-        //     .attr('d', 'M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80')
-        //     .attr('stroke', 'black')
-        //     .attr('fill','transparent')
+    loadShapes(){
+        const squareArr = this.shapeArr.filter(shape => shape.type === Common.square ? shape : null),
+            circleArr = this.shapeArr.filter(shape => shape.type === Common.circle ? shape : null);
+        select(this.node)
+            .selectAll('.shape')
+            .remove();
+
+        select(this.node)
+            .selectAll('')
+    }
+
+    selectShape(selectedShape){
+        if(selectedShape){
+            const {posX, posY, width, height} = selectedShape,
+                currentHighlight = select(this.node).selectAll('.selected-shape-highlight');
+
+            select(this.node)
+                .selectAll('.selected-shape-highlight')
+                .data()
+        }
     }
 
     addShape(){
+        const posX = this.props.shapeType === Common.square ? 
+                select(this.node).selectAll('.stamp').attr('x') :
+                select(this.node).selectAll('.stamp').attr('cx'),
+            posY = this.props.shapeType === Common.square ? 
+                select(this.node).selectAll('.stamp').attr('y') :
+                select(this.node).selectAll('.stamp').attr('cy'),
+            transform = select(this.node).selectAll('.stamp').attr('transform'),
+            newShapeUuid = uuid();
+
+        this.currentShape.posX = posX;
+        this.currentShape.posY = posY;
+        this.currentShape.id = newShapeUuid;
         this.shapeArr.push({...this.currentShape});
 
         this.props.addShape(this.currentShape)
 
-        const posX = select(this.node).selectAll('.stamp').attr('x'),
-            posY = select(this.node).selectAll('.stamp').attr('y'),
-            transform = select(this.node).selectAll('.stamp').attr('transform');
+        select(this.node)
+            .selectAll('.stamp')
+            .remove();
         
         if(this.props.shapeType === Common.square){
             select(this.node)
@@ -162,9 +214,22 @@ export default class ShapeCanvas extends Component {
                 .attr('fill', obj => obj.color)
                 .attr('width', obj => obj.width)
                 .attr('height', obj => obj.height)
-                .attr('x', posX)
-                .attr('y', posY)
+                .attr('x', obj => obj.posX)
+                .attr('y', obj => obj.posY)
                 .attr('transform', transform);
+
+            select(this.node)
+                .selectAll('.stamp')
+                .data([this.currentShape])
+                .enter()
+                .append('rect')
+                .attr('class', 'stamp')
+                .attr('fill', obj => obj.color)
+                .attr('width', obj => obj.width)
+                .attr('height', obj => obj.height)
+                .attr('x', obj => obj.posX)
+                .attr('y', obj => obj.posY)
+                .attr('transform', obj => `translate(-${obj.width / 2}, -${obj.height / 2})`)
 
         } else {
             select(this.node)
@@ -176,7 +241,8 @@ export default class ShapeCanvas extends Component {
                 .attr('fill', obj => obj.color)
                 .attr('r', obj => obj.radius)
                 .attr('cx', obj => obj.posX * this.scalePosX)
-                .attr('cy', obj => obj.posY * this.scalePosY);
+                .attr('cy', obj => obj.posY * this.scalePosY)
+                .attr('transform', transform);
 
         }
     }
@@ -275,7 +341,6 @@ export default class ShapeCanvas extends Component {
                 width: `${canvasWidth}px`,
                 height: `${canvasHeight}px`,
                 backgroundColor: this.props.backgroundColor,
-                position: 'relative'
             }
         }
         return (

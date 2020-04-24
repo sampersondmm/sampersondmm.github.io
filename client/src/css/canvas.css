@@ -9,14 +9,15 @@
 }
 
 .canvas-display {
-    display: flex;
     width: 100%;
-    justify-content: space-between;
+    position: relative;
     background-color: rgb(200,200,200);
 }
 
 .canvas-display-inner {
     display: flex;
+    position: absolute;
+    overflow: scroll;
     width: 100%;
     height: 100%;
     align-items: center;

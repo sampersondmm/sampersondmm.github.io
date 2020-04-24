@@ -46,14 +46,6 @@ class TopPanel extends Component {
                         closeMenu={this.closeMenu}
                     />
                 )
-            case Common.shape:
-                return (
-                    <BaseTopMenu
-                        name={Common.shape}
-                        position={this.state.position}
-                        closeMenu={this.closeMenu}
-                    />
-                )
             case Common.size:
                 return (
                     <BaseTopMenu
@@ -109,19 +101,11 @@ class TopPanel extends Component {
                         icon={<i className="far fa-expand-arrows"></i>}
                     />
                     <PanelButton 
-                        name={Common.shape}
-                        type={Common.topPanel}
-                        tooltipPosition={TooltipPositions.bottom}
-                        controlMenu={this.controlMenu}
-                        position={1}
-                        icon={<i className="far fa-shapes"></i>}
-                    />
-                    <PanelButton 
                         name={Common.color}
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
-                        position={2}
+                        position={1}
                         icon={<i className="far fa-fill"></i>}
                     />
                     <PanelButton 
@@ -129,7 +113,7 @@ class TopPanel extends Component {
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
-                        position={3}
+                        position={2}
                         icon={<i className="far fa-palette"></i>}
                     />
                     <PanelButton 
@@ -137,7 +121,7 @@ class TopPanel extends Component {
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
                         controlMenu={this.controlMenu}
-                        position={4}
+                        position={3}
                         icon={<i className="far fa-search-plus"></i>}
                     />
                 </div>
@@ -146,19 +130,19 @@ class TopPanel extends Component {
                     <PanelButton 
                         name={Common.clear}
                         type={Common.topPanel}
-                        position={5}
+                        position={4}
                         icon={<i className="far fa-trash"></i>}
                     />
                     <PanelButton 
                         name={Common.save}
                         type={Common.topPanel}
-                        position={6}
+                        position={5}
                         icon={<i className="far fa-download"></i>}
                     />
                     <PanelButton 
                         name={Common.exit} 
                         type={Common.topPanel}
-                        position={7}
+                        position={6}
                         exit={true}
                         icon={<i className="far fa-portal-exit"></i>}
                     />
