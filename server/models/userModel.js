@@ -36,7 +36,7 @@ userSchema.pre('save', async function(next){
 });
 
 //Compares hashed password to other hashed passwords, if one matches allow user to login
-userSchema.method.comparePassword = async (candidatePassword, next) => {
+userSchema.methods.comparePassword = async function(candidatePassword, next) {
     try {
         let isMatch = await bcrypt.compare(candidatePassword, this.password);
         return isMatch;

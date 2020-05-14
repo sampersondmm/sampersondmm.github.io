@@ -53,7 +53,7 @@ class RightPanel extends Component {
                         name={Common.layers}
                         type={Common.sidePanel}
                         tooltipPosition={TooltipPositions.right}
-                        controlMenu={this.handleMenus}
+                        onClick={this.handleMenus}
                         icon={<i className="fal fa-layer-group"></i>}
                     />
             </div>

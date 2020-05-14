@@ -107,7 +107,8 @@ export default class ShapeCanvas extends Component {
 
             node
                 .attr('x', () => (event.x - canvasElement.left) * this.scalePosX)
-                .attr('y', () => (event.y - canvasElement.top) * this.scalePosY);
+                .attr('y', () => (event.y - canvasElement.top) * this.scalePosY)
+                .attr('transform', `translate(-${shapeWidth/2}, -${shapeHeight/2})`);
 
             this.currentShape.posX = (event.x - canvasElement.left);
             this.currentShape.posY = (event.y - canvasElement.top);
@@ -123,10 +124,19 @@ export default class ShapeCanvas extends Component {
 
     centerStamp(){
         this.hoverActive = false;
-        select(this.node)
-            .selectAll('.stamp')
-            .attr('x', this.props.canvasWidth / 2)
-            .attr('y', this.props.canvasHeight / 2)
+
+        const stamp = select(this.node)
+            .selectAll('.stamp');
+
+        if(this.currentShape.type === Common.square){
+            stamp
+                .attr('x', this.props.canvasWidth / 2)
+                .attr('y', this.props.canvasHeight / 2)
+        } else {
+            stamp
+                .attr('cx', this.props.canvasWidth / 2)
+                .attr('cy', this.props.canvasHeight / 2)
+        }       
     }
 
     setupCanvas(){
@@ -184,14 +194,19 @@ export default class ShapeCanvas extends Component {
     }
 
     addShape(){
-        const posX = this.props.shapeType === Common.square ? 
-                select(this.node).selectAll('.stamp').attr('x') :
-                select(this.node).selectAll('.stamp').attr('cx'),
-            posY = this.props.shapeType === Common.square ? 
-                select(this.node).selectAll('.stamp').attr('y') :
-                select(this.node).selectAll('.stamp').attr('cy'),
-            transform = select(this.node).selectAll('.stamp').attr('transform'),
-            newShapeUuid = uuid();
+        const newShapeUuid = uuid(),
+            transform = select(this.node).selectAll('.stamp').attr('transform');
+
+        let posX = null;
+        let posY = null;
+        if(this.props.shapeType === Common.square){
+            posX = select(this.node).selectAll('.stamp').attr('x');
+            posY = select(this.node).selectAll('.stamp').attr('y')
+        } else {
+            const stamp = select(this.node).selectAll('.stamp');
+            posX = select(this.node).selectAll('.stamp').attr('cx');
+            posY = select(this.node).selectAll('.stamp').attr('cy')
+        }
 
         this.currentShape.posX = posX;
         this.currentShape.posY = posY;
@@ -242,7 +257,17 @@ export default class ShapeCanvas extends Component {
                 .attr('r', obj => obj.radius)
                 .attr('cx', obj => obj.posX * this.scalePosX)
                 .attr('cy', obj => obj.posY * this.scalePosY)
-                .attr('transform', transform);
+
+            select(this.node)
+                .selectAll('.stamp')
+                .data([this.currentShape])
+                .enter()
+                .append('circle')
+                .attr('class', 'stamp')
+                .attr('fill', obj => obj.color)
+                .attr('r', obj => obj.radius)
+                .attr('cx', obj => obj.posX * this.scalePosX)
+                .attr('cy', obj => obj.posY * this.scalePosY)
 
         }
     }

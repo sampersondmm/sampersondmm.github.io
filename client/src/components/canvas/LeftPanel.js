@@ -55,21 +55,21 @@ class LeftPanel extends Component {
                     name={'Add New Shape'}
                     type={Common.sidePanel}
                     tooltipPosition={TooltipPositions.left}
-                    controlMenu={() => this.handleShapeSelection(false)}
+                    onClick={() => this.handleShapeSelection(false)}
                     icon={<i className="fal fa-plus-circle"></i>}
                 />
                 <PanelButton 
                     name={'Select Shape'}
                     type={Common.sidePanel}
                     tooltipPosition={TooltipPositions.left}
-                    controlMenu={() => this.handleShapeSelection(true)}
+                    onClick={() => this.handleShapeSelection(true)}
                     icon={<i className="fal fa-mouse-pointer"></i>}
                 />
                 <PanelButton 
                     name={Common.shapes}
                     type={Common.sidePanel}
                     tooltipPosition={TooltipPositions.left}
-                    controlMenu={this.handleMenus}
+                    onClick={this.handleMenus}
                     icon={<i className="fal fa-shapes"></i>}
                 />
             </div>

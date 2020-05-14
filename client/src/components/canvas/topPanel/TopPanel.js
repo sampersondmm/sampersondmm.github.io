@@ -22,6 +22,7 @@ class TopPanel extends Component {
         this.closeMenu = this.closeMenu.bind(this);
         this.changeCanvasSize = this.changeCanvasSize.bind(this);
         this.handleMenus = this.handleMenus.bind(this);
+        this.saveCanvas = this.saveCanvas.bind(this);
     }
     controlMenu(value, position){
         this.setState(state => ({   
@@ -35,6 +36,9 @@ class TopPanel extends Component {
             ...state,
             isOpen: false
         }))
+    }
+    saveCanvas(){
+        this.props.dispatch()
     }
     handleMenus(){
         switch(this.state.isOpen){
@@ -96,7 +100,7 @@ class TopPanel extends Component {
                         name={Common.size}
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
-                        controlMenu={this.controlMenu}
+                        onClick={() => this.controlMenu(Common.size, 0)}
                         position={0}
                         icon={<i className="far fa-expand-arrows"></i>}
                     />
@@ -104,7 +108,7 @@ class TopPanel extends Component {
                         name={Common.color}
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
-                        controlMenu={this.controlMenu}
+                        onClick={() => this.controlMenu(Common.color, 1)}
                         position={1}
                         icon={<i className="far fa-fill"></i>}
                     />
@@ -112,7 +116,7 @@ class TopPanel extends Component {
                         name={Common.palette}
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
-                        controlMenu={this.controlMenu}
+                        onClick={() => this.controlMenu(Common.palette, 2)}
                         position={2}
                         icon={<i className="far fa-palette"></i>}
                     />
@@ -120,7 +124,7 @@ class TopPanel extends Component {
                         name={Common.zoom}
                         type={Common.topPanel}
                         tooltipPosition={TooltipPositions.bottom}
-                        controlMenu={this.controlMenu}
+                        onClick={() => this.controlMenu(Common.zoom, 3)}
                         position={3}
                         icon={<i className="far fa-search-plus"></i>}
                     />
@@ -130,18 +134,22 @@ class TopPanel extends Component {
                     <PanelButton 
                         name={Common.clear}
                         type={Common.topPanel}
+                        tooltipPosition={TooltipPositions.bottomRight}
                         position={4}
                         icon={<i className="far fa-trash"></i>}
                     />
                     <PanelButton 
                         name={Common.save}
                         type={Common.topPanel}
+                        tooltipPosition={TooltipPositions.bottomRight}
                         position={5}
+                        onClick={this.saveCanvas}
                         icon={<i className="far fa-download"></i>}
                     />
                     <PanelButton 
                         name={Common.exit} 
                         type={Common.topPanel}
+                        tooltipPosition={TooltipPositions.bottomRight}
                         position={6}
                         exit={true}
                         icon={<i className="far fa-portal-exit"></i>}

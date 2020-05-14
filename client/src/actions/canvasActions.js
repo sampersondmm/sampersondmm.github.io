@@ -1,4 +1,5 @@
 import ActionTypes from './ActionTypes';
+import {apiCall} from './api';
 
 const setCanvasSize = (canvasWidth, canvasHeight) => {
     return {
@@ -90,6 +91,9 @@ removeColorFromPalette = newColorPalette => {
         type: ActionTypes.REPLACE_PALETTE,
         payload: newColorPalette
     }
+},
+saveCanvas = canvasData => {
+    apiCall('post', '/api/canvas/save', canvasData)
 };
 
 export {setCanvasSize, addShapeToCanvas, changeShapeType, changeShapeColor, changeShapeWidth, changeCanvasScale, changeShapeHeight, changeShapeRadius, selectShape, changeBackgroundColor, addColorToPalette, removeColorFromPalette};
