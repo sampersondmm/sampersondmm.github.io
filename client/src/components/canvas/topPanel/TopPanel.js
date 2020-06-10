@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Common from '../../../constants/common';
 import PanelButton from '../PanelButton';
-import PaletteMenu from './PaletteMenu';
-import SizeMenu from './SizeMenu';
-import ZoomMenu from '../ZoomMenu';
-import SetupCanvas from '../SetupCanvas';
-import {setCanvasSize} from '../../../actions/canvasActions';
+import {setCanvasSize, createCanvas} from '../../../actions/canvasActions';
 import logo from '../../../images/newLogo.png';
 import TooltipPositions from '../../../constants/tooltips';
 import BaseTopMenu from './BaseTopMenu';
@@ -38,7 +34,8 @@ class TopPanel extends Component {
         }))
     }
     saveCanvas(){
-        this.props.dispatch()
+        const {canvas} = this.props
+        this.props.createCanvas({canvasData: canvas})
     }
     handleMenus(){
         switch(this.state.isOpen){
@@ -160,8 +157,8 @@ class TopPanel extends Component {
     }
 }
 
-const mapStateToProps= (state) => {
-    const {backgroundColor, shapeColor, width, height} = state.canvas
+const mapStateToProps = (state) => {
+    const {backgroundColor, shapeColor, width, height} = state.canvas;
     return {
         ...state,
         backgroundColor,
@@ -171,4 +168,4 @@ const mapStateToProps= (state) => {
     }
 }
 
-export default connect(mapStateToProps)(TopPanel);
+export default connect(mapStateToProps, {createCanvas})(TopPanel);

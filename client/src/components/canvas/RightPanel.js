@@ -61,16 +61,4 @@ class RightPanel extends Component {
     }
 }
 
-const mapStateToProps= (state) => {
-    const {backgroundColor, shapeColor, shapeList, width, height} = state.canvas
-    return {
-        ...state,
-        backgroundColor,
-        shapeColor,
-        shapeList,
-        width,
-        height
-    }
-}
-
-export default connect(mapStateToProps)(RightPanel);
+export default RightPanel;

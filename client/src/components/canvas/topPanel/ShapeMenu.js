@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ColorPicker from './ColorPicker';
-import Common from '../../constants/common';
-import PanelButton from './PanelButton';
-import Size from '../../constants/size';
-import {changeShapeColor, changeShapeType, changeShapeWidth, changeShapeHeight, changeShapeRadius, selectShape, changeBackgroundColor} from '../../actions/canvasActions';
+import ColorPicker from '../ColorPicker';
+import Common from '../../../constants/common';
+import PanelButton from '../PanelButton';
+import Size from '../../../constants/size';
+import {changeShapeColor, changeShapeType, changeShapeWidth, changeShapeHeight, changeShapeRadius, selectShape, changeBackgroundColor} from '../../../actions/canvasActions';
 import map from 'lodash/map';
-import {MenuTypes} from './BaseMenu';
-import TooltipPositions from '../../constants/tooltips';
+import {MenuTypes} from '../BaseMenu';
+import TooltipPositions from '../../../constants/tooltips';
 
 class ShapeMenu extends Component {
     constructor(props){

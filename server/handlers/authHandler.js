@@ -2,27 +2,26 @@ const db = require('../models');
 const jwt = require('jsonwebtoken');
 
 exports.signup = async (req, res, next) => {
+    console.log(req.body)
     try {
         let user = await db.User.create(req.body);
-        let {id, username, profileImageUrl} = user;
+        let {id, email, profileImageUrl} = user;
         let token = jwt.sign(
             {
                 id,
-                username,
-                profileImageUrl
+                email
             }, 
             process.env.SECRET_KEY
         );
         return res.status(200).json({
             id,
-            username,
-            profileImageUrl,
+            email,
             token
         });
     } catch(err) {
         // if validation fails
         if(err.code === 11000){
-            err.message = 'Sorry, that username and/or email is taken';
+            err.message = 'Sorry, that email is already taken';
         }
         return next({
             status: 400,
@@ -37,20 +36,20 @@ exports.signin = async (req, res, next) => {
        let user = await db.User.findOne({
             email: req.body.email
         });
-        let {id, username, profileImageUrl} = user;
+        let {id, email, profileImageUrl} = user;
         let isMatch = await user.comparePassword(req.body.password);
         if(isMatch){
             let token = jwt.sign(
                 {
                     id,
-                    username,
+                    email,
                     profileImageUrl
                 }, 
                 process.env.SECRET_KEY
             );
             return res.status(200).json({
                 id, 
-                username,
+                email,
                 profileImageUrl,
                 token
             });

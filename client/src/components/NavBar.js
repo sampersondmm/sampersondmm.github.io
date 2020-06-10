@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavDropdown,Form, FormControl, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import logo from '../images/newLogo.png'
+import logo from '../images/newLogo.png';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import {logoutUser} from '../actions/userActions';
 
 class NavBar extends Component {
     constructor(props){
         super(props);
+        this.logout = this.logout.bind(this);
+    }
+    logout(e){
+        e.preventDefault();
+        this.props.logoutUser();
     }
     render(){
         return (
@@ -25,7 +33,9 @@ class NavBar extends Component {
                         <Link className='button-link' to='/'>Home</Link>
                     </Nav.Link>
                     <Nav.Link>
-                        <Link className='button-link' to='/canvas/new'>New Canvas</Link>
+                        <Link 
+                            className='button-link' 
+                            to={'/canvas/new'}>New Canvas</Link>
                     </Nav.Link>
                     <Nav.Link>
                         <Link className='button-link' to='/'>Help</Link>
@@ -39,7 +49,7 @@ class NavBar extends Component {
                             <Link className='button-link' to='/'>Account</Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link className='button-link' to='/login'>Sign Out</Link>
+                            <a className='button-link' onClick={this.logout}>Sign Out</a>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -48,4 +58,10 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar;
+const mapStateToProps = state => {
+    return {
+        currentUser: state.currentUser
+    }
+}
+
+export default connect(mapStateToProps, {logoutUser})(NavBar);

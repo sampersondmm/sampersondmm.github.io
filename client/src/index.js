@@ -4,7 +4,10 @@ import App from './components/App';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import rootReducer from './reducers';
-import {createStore, compose} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import {setAuthorizationToken, setCurrentUser} from './actions/userActions';
+import thunk from 'redux-thunk';
+import jwtDecode from 'jwt-decode';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './fontAwesome/css/all.css';
@@ -27,13 +30,25 @@ import './css/shapeMenu.css';
 import './css/zoomMenu.css';
 import './css/layerMenu.css';
 import './css/layerMenu2.css';
+import './css/canvasList.css';
 
 export const store = createStore(
     rootReducer,
     compose(
-      window.devToolsExtension ? window.devToolsExtension() : f => f,
+        applyMiddleware(thunk),
+        window.devToolsExtension ? window.devToolsExtension() : f => f,
     )
   );
+
+if(sessionStorage.jwtToken) {
+    setAuthorizationToken(sessionStorage.jwtToken);
+    //prevent tampering of jwtToken key in sessionStorage
+    try {
+        store.dispatch(setCurrentUser(jwtDecode(sessionStorage.jwtToken)))
+    } catch(err) {
+        store.dispatch(setCurrentUser({}))
+    }   
+}
 
 ReactDOM.render(
     <Provider store={store}>

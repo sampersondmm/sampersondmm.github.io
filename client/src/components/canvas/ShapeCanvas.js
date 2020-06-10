@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {event, select} from 'd3-selection';
-import Common from '../../../constants/common';
+import Common from '../../constants/common';
 import uuid from 'react-uuid';
+import {clearCanvasData} from '../../actions/canvasActions';
+import {connect} from 'react-redux';
 
-export default class ShapeCanvas extends Component {
+class ShapeCanvas extends Component {
     /**
      * Creates an instance of the Canvas
      *
@@ -12,7 +14,6 @@ export default class ShapeCanvas extends Component {
     constructor(props) {
         super(props);
         this.backgroundColor = this.props.backgroundColor;
-        // this.circleColor = 'rgb(100,120,120)';
         this.circleColor = this.props.shapeColor;
         this.speedConst = 0.5;
         this.particleCount = 150;
@@ -46,29 +47,29 @@ export default class ShapeCanvas extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        const {canvasWidth, canvasHeight, canvasScale, shapeType, shapeWidth, shapeHeight, shapeRadius, selectedShape, shapeColor} = nextProps;
-        if(shapeColor !== this.props.shapeColor){
+        const {canvasWidth, canvasHeight, canvasScale, shapeType, shapeWidth, shapeHeight, shapeRadius, selectedShape, shapeColor} = nextProps.canvas;
+        if(shapeColor !== this.props.canvas.shapeColor){
             this.changeShapeColor(shapeColor)
         }
-        if(shapeType !== this.props.shapeType){
+        if(shapeType !== this.props.canvas.shapeType){
             this.changeShapeType(shapeType)
         }
-        if(shapeWidth !== this.props.shapeWidth){
+        if(shapeWidth !== this.props.canvas.shapeWidth){
             this.changeShapeWidth(shapeWidth)
         }
-        if(shapeHeight !== this.props.shapeHeight){
+        if(shapeHeight !== this.props.canvas.shapeHeight){
             this.changeShapeHeight(shapeHeight)
         }
-        if(shapeRadius !== this.props.shapeRadius){
+        if(shapeRadius !== this.props.canvas.shapeRadius){
             this.changeShapeRadius(shapeRadius)
         }
-        if(canvasScale !== this.props.canvasScale){
+        if(canvasScale !== this.props.canvas.canvasScale){
             this.changeCanvasScale(canvasScale)
         }
-        if(selectedShape !== this.props.selectedShape){
+        if(selectedShape !== this.props.canvas.selectedShape){
             this.selectShape(selectedShape)
         }
-        if(nextProps !== this.props){
+        if(nextProps.canvas !== this.props.canvas){
             this.centerStamp();
         }
     }
@@ -79,20 +80,23 @@ export default class ShapeCanvas extends Component {
      * @returns {void}
      */
     componentDidMount() {
+        const {shapeColor, backgroundColor} = this.props.canvas;
         this.setState(state => ({
             ...state,
-            shapeColor: this.props.shapeColor,
-            backgroundColor: this.props.backgroundColor
+            shapeColor: shapeColor,
+            backgroundColor: backgroundColor
         }));
         window.addEventListener('resize', this.resize);
         this.setupCanvas();
     }
 
     moveShape(){
-        const canvasElement = document.getElementById('canvas').getBoundingClientRect();
+        const {shapeType} = this.props.canvas,
+            canvasElement = document.getElementById('canvas').getBoundingClientRect(),
+            node = select(this.node)
+                .select('.stamp');
+
         this.hoverActive = true;
-        const node = select(this.node)
-            .select('.stamp');
 
         node.attr('visibility', 'visible')
 
@@ -100,7 +104,7 @@ export default class ShapeCanvas extends Component {
             shapeHeight = null;
 
 
-        if(this.props.shapeType === Common.square){
+        if(shapeType === Common.square){
             shapeWidth = node.attr('width'); 
             shapeHeight = node.attr('height'); 
 
@@ -123,6 +127,7 @@ export default class ShapeCanvas extends Component {
     }
 
     centerStamp(){
+        const {canvasWidth, canvasHeight} = this.props.canvas;
         this.hoverActive = false;
 
         const stamp = select(this.node)
@@ -130,26 +135,27 @@ export default class ShapeCanvas extends Component {
 
         if(this.currentShape.type === Common.square){
             stamp
-                .attr('x', this.props.canvasWidth / 2)
-                .attr('y', this.props.canvasHeight / 2)
+                .attr('x', canvasWidth / 2)
+                .attr('y', canvasHeight / 2)
         } else {
             stamp
-                .attr('cx', this.props.canvasWidth / 2)
-                .attr('cy', this.props.canvasHeight / 2)
+                .attr('cx', canvasWidth / 2)
+                .attr('cy', canvasHeight / 2)
         }       
     }
 
     setupCanvas(){
+        const {shapeWidth, shapeHeight, shapeColor} = this.props.canvas;
         // Default starting shape
         this.currentShape = {
-            width: this.props.shapeWidth,
-            height: this.props.shapeHeight,
+            width: shapeWidth,
+            height: shapeHeight,
             posX: 100, 
             posY: 100,
             type: Common.square,
             border: 0,
             rotation: 0,
-            color: this.props.shapeColor
+            color: shapeColor
         };
 
         select(this.node)
@@ -194,12 +200,13 @@ export default class ShapeCanvas extends Component {
     }
 
     addShape(){
-        const newShapeUuid = uuid(),
+        const {shapeType} = this.props.canvas,
+            newShapeUuid = uuid(),
             transform = select(this.node).selectAll('.stamp').attr('transform');
 
         let posX = null;
         let posY = null;
-        if(this.props.shapeType === Common.square){
+        if(shapeType === Common.square){
             posX = select(this.node).selectAll('.stamp').attr('x');
             posY = select(this.node).selectAll('.stamp').attr('y')
         } else {
@@ -211,6 +218,7 @@ export default class ShapeCanvas extends Component {
         this.currentShape.posX = posX;
         this.currentShape.posY = posY;
         this.currentShape.id = newShapeUuid;
+        this.currentShape.transform = transform;
         this.shapeArr.push({...this.currentShape});
 
         this.props.addShape(this.currentShape)
@@ -219,7 +227,7 @@ export default class ShapeCanvas extends Component {
             .selectAll('.stamp')
             .remove();
         
-        if(this.props.shapeType === Common.square){
+        if(shapeType === Common.square){
             select(this.node)
                 .selectAll('.shape')
                 .data(this.shapeArr)
@@ -281,10 +289,11 @@ export default class ShapeCanvas extends Component {
     }
 
     changeCanvasScale(newScale) {
+        const {canvasWidth, canvasHeight} = this.props.canvas;
         select(this.node)
             .attr('transform', `scale(${newScale})`)
-        this.scalePosX = this.props.canvasWidth / (this.props.canvasWidth * newScale);
-        this.scalePosY = this.props.canvasHeight / (this.props.canvasHeight * newScale);
+        this.scalePosX = canvasWidth / (canvasWidth * newScale);
+        this.scalePosY = canvasHeight / (canvasHeight * newScale);
     }
 
     changeShapeHeight(newHeight){
@@ -310,6 +319,8 @@ export default class ShapeCanvas extends Component {
     }
 
     changeShapeType(newType){
+        const {shapeWidth, shapeHeight, shapeRadius} = this.props.canvas;
+
         select(this.node)
             .selectAll('.stamp')
             .remove()
@@ -321,8 +332,8 @@ export default class ShapeCanvas extends Component {
         if(newType === Common.square){
             this.currentShape = {
                 ...this.currentShape,
-                width: this.props.shapeWidth,
-                height: this.props.shapeHeight,
+                width: shapeWidth,
+                height: shapeHeight,
                 type: Common.square
             }
 
@@ -342,7 +353,7 @@ export default class ShapeCanvas extends Component {
         } else {
             this.currentShape = {
                 ...this.currentShape,
-                radius: this.props.shapeRadius,
+                radius: shapeRadius,
                 type: Common.circle
             }
 
@@ -360,19 +371,22 @@ export default class ShapeCanvas extends Component {
     }
 
     render() {
-        const {canvasWidth, canvasHeight} = this.props;
-        const style = {
-            main: {
-                width: `${canvasWidth}px`,
-                height: `${canvasHeight}px`,
-                backgroundColor: this.props.backgroundColor,
-            }
-        }
+        const {canvasWidth, canvasHeight, backgroundColor} = this.props.canvas,
+            style = {
+                main: {
+                    width: `${canvasWidth}px`,
+                    height: `${canvasHeight}px`,
+                    backgroundColor: backgroundColor,
+                }
+            };
+            
         return (
             <svg style={style.main} id='canvas' ref={node => (this.node = node)}/>
         );
     }
 }
+
+export default ShapeCanvas;
 
 
 

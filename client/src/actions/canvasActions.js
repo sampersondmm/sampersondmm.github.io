@@ -1,5 +1,6 @@
 import ActionTypes from './ActionTypes';
 import {apiCall} from './api';
+import { addError } from './errorActions';
 
 const setCanvasSize = (canvasWidth, canvasHeight) => {
     return {
@@ -92,8 +93,51 @@ removeColorFromPalette = newColorPalette => {
         payload: newColorPalette
     }
 },
-saveCanvas = canvasData => {
-    apiCall('post', '/api/canvas/save', canvasData)
+loadCanvasList = canvasList => {
+    return {
+        type: ActionTypes.LOAD_CANVAS_LIST,
+        payload: canvasList
+    }
+},
+clearCanvasData = () => {
+    return {
+        type: ActionTypes.CLEAR_CANVAS_DATA,
+        payload: null
+    }
+},
+fetchCanvasList = () => {
+    return dispatch => {
+        return apiCall('get', '/api/canvas')
+            .then(res => {
+                dispatch(loadCanvasList(res))
+            })
+            .catch(err => {
+                addError(err.message);
+            })
+    }
+},
+createCanvas = canvasData => (dispatch, getState) => {
+    let {currentUser} = getState();
+    const {id} = currentUser.user;
+    apiCall('post', `/api/users/${id}/canvas`, canvasData)
+        .then(res => {})
+        .catch(err => dispatch(addError(err.message)));
 };
 
-export {setCanvasSize, addShapeToCanvas, changeShapeType, changeShapeColor, changeShapeWidth, changeCanvasScale, changeShapeHeight, changeShapeRadius, selectShape, changeBackgroundColor, addColorToPalette, removeColorFromPalette};
+export {
+    setCanvasSize, 
+    addShapeToCanvas, 
+    changeShapeType, 
+    changeShapeColor, 
+    changeShapeWidth, 
+    changeCanvasScale, 
+    createCanvas, 
+    fetchCanvasList,
+    changeShapeHeight, 
+    changeShapeRadius, 
+    selectShape, 
+    changeBackgroundColor, 
+    addColorToPalette, 
+    clearCanvasData,
+    removeColorFromPalette
+};

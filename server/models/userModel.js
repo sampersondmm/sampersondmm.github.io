@@ -7,18 +7,17 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    username: {
-        type: String,
-        required: true,
-        unique: true
-    },
     password: {
         type: String,
         required: true
     },
     profileImageUrl: {
         type: String
-    }
+    },
+    canvas: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Canvas'
+    }]
 });
 
 //hash the password before the save

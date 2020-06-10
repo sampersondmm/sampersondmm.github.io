@@ -4,8 +4,8 @@ import RightPanel from './RightPanel';
 import LeftPanel from './LeftPanel';
 import TopPanel from './topPanel/TopPanel';
 import Size from '../../constants/size';
-import ShapeCanvas from './topPanel/ShapeCanvas'
-import { addShapeToCanvas } from '../../actions/canvasActions';
+import ShapeCanvas from './ShapeCanvas'
+import {addShapeToCanvas, clearCanvasData} from '../../actions/canvasActions';
 
 class Canvas extends Component {
     constructor(props){
@@ -41,7 +41,7 @@ class Canvas extends Component {
             width = (Size.sidePanelWidth*2) + Size.sidePanelMenuWidth;
         }
         if(!rightPanelOpen && leftPanelOpen){
-            width = (Size.sidePanelWidth*2)+ Size.sidePanelMenuWidth;
+            width = (Size.sidePanelWidth*2) + Size.sidePanelMenuWidth;
         }
         if(!rightPanelOpen && !leftPanelOpen){
             width =  Size.sidePanelWidth * 2;
@@ -52,7 +52,8 @@ class Canvas extends Component {
         return width;
     }
     render(){
-        const width = this.determineWidth(),
+        const {canvas} = this.props, 
+            width = this.determineWidth(),
             style = {
                 canvasDisplay: {
                     height: `calc(100vh - ${Size.topPanelHeight}px)`,
@@ -63,10 +64,10 @@ class Canvas extends Component {
                     left: `${this.state.leftPanelOpen ? Size.sidePanelWidth + Size.sidePanelMenuWidth : Size.sidePanelWidth}px`,
                     top: '0'
                 }
-            }
+            };
         return(
             <div className='canvas-wrap'>
-                <TopPanel/>
+                <TopPanel canvasData={canvas.shapeList}/>
                 <div className='canvas-display' style={style.canvasDisplay}>
                     <LeftPanel
                         handleMenu={this.handleLeftMenu}
@@ -74,17 +75,19 @@ class Canvas extends Component {
                     />
                     <div className='canvas-display-inner' style={style.canvasDisplayInner}>
                         <ShapeCanvas 
-                            canvasWidth={this.props.canvasWidth}
-                            canvasHeight={this.props.canvasHeight}
-                            canvasScale={this.props.canvasScale}
-                            backgroundColor={this.props.backgroundColor}
-                            shapeColor={this.props.shapeColor}
-                            shapeType={this.props.shapeType}
-                            shapeWidth={this.props.shapeWidth}
-                            shapeHeight={this.props.shapeHeight}
-                            shapeRadius={this.props.shapeRadius}
+                            // canvasWidth={this.props.canvasWidth}
+                            // canvasHeight={this.props.canvasHeight}
+                            // canvasScale={this.props.canvasScale}
+                            // backgroundColor={this.props.backgroundColor}
+                            // shapeColor={this.props.shapeColor}
+                            // shapeType={this.props.shapeType}
+                            // shapeWidth={this.props.shapeWidth}
+                            // shapeHeight={this.props.shapeHeight}
+                            // shapeRadius={this.props.shapeRadius}
                             addShape={this.addShape}
-                            selectedShape={this.props.selectedShape}
+                            canvas={this.props.canvas}
+                            // selectedShape={this.props.selectedShape}
+                            // updateCanvasData={updateCanvasData}
                         />
                     </div>
                     <RightPanel
@@ -98,19 +101,10 @@ class Canvas extends Component {
 }
 
 const mapStateToProps = state => {
-    const {canvasWidth, canvasScale, selectedShape, canvasHeight, backgroundColor, shapeType, shapeWidth, shapeHeight, shapeRadius, shapeColor} = state.canvas;
+    const {canvas} = state;
     return {
         ...state,
-        canvasWidth,
-        canvasHeight,
-        canvasScale,
-        backgroundColor,
-        shapeColor,
-        shapeWidth,
-        shapeHeight,
-        shapeRadius,
-        selectedShape,
-        shapeType,
+        canvas
     }
 }
 

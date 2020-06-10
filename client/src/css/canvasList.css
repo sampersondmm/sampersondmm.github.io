@@ -1,0 +1,13 @@
+.canvas-list-wrap {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px;
+    /* padding: 10px; */
+}
+
+.canvas-item {
+    margin: 20px;
+
+}

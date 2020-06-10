@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Common from '../../constants/common';
 import PanelButton from './PanelButton';
-import ShapeMenu from './ShapeMenu';
+import ShapeMenu from './topPanel/ShapeMenu';
 import SetupCanvas from './SetupCanvas';
 import {setCanvasSize} from '../../actions/canvasActions';
 import TooltipPositions from '../../constants/tooltips';

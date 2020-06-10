@@ -1,5 +1,10 @@
 import React, {Component} from 'react';
+import CanvasView from './canvas/topPanel/CanvasView';
 import NavBar from './NavBar';
+import {fetchCanvasList} from '../actions/canvasActions';
+import {connect} from 'react-redux';
+import {apiCall} from '../actions/api';
+import CanvasList from './CanvasList';
 
 class HomePage extends Component {
     constructor(props){
@@ -9,9 +14,12 @@ class HomePage extends Component {
         return (
             <div className='homepage'>
                 <NavBar/>
+                <div className='homepage-body'>
+                    <CanvasList />
+                </div>
             </div>
         )
     }
 }
 
-export default HomePage;
+export default HomePage

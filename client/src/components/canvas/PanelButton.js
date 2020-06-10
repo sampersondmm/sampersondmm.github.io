@@ -10,7 +10,6 @@ class PanelButton extends Component {
             hover: false,
             class: 'panel-button'
         }
-
         this.handleHover = this.handleHover.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleTooltipEvents = this.handleTooltipEvents.bind(this);

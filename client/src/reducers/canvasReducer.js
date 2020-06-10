@@ -21,11 +21,10 @@ const DEFAULT_STATE = {
     {color: "#5b2175", uuid: "55fa65b-b05-e446-d0f-77757824e5"},
     {color: "#cd5b5b", uuid: "b24323-3bc0-1671-c67e-53823dac62"}
   ]
-}
+};
 
 
-
-const sidePanel = (state = DEFAULT_STATE, action = {}) => {
+const canvasEditReducer = (state = DEFAULT_STATE, action = {}) => {
   const {type, payload} = action,
     result = payload || {};
   switch(type){
@@ -91,9 +90,23 @@ const sidePanel = (state = DEFAULT_STATE, action = {}) => {
         ...state,
         selectedShape: payload
       }
+    case ActionTypes.UPDATE_CANVAS_DATA:
+      return {
+        ...state,
+        newCanvasData: payload
+      }
+    case ActionTypes.CLEAR_CANVAS_DATA: 
+      return {
+        canvasData: DEFAULT_STATE
+      }
+    case ActionTypes.LOAD_CANVAS_LIST:
+      return {
+        ...state,
+        canvasList: payload
+      }
     default:
       return state;
   }
-}
+};
 
-export default sidePanel;
+export default canvasEditReducer;
