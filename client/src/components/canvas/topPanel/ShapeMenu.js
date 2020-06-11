@@ -8,6 +8,7 @@ import {changeShapeColor, changeShapeType, changeShapeWidth, changeShapeHeight, 
 import map from 'lodash/map';
 import {MenuTypes} from '../BaseMenu';
 import TooltipPositions from '../../../constants/tooltips';
+import {store} from '../../../';
 
 class ShapeMenu extends Component {
     constructor(props){
@@ -28,11 +29,12 @@ class ShapeMenu extends Component {
         this.changeDimensions = this.changeDimensions.bind(this);
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.colorPalette !== this.props.colorPalette){
-            this.renderPalette(nextProps.colorPalette);
+        const {colorPalette, shapeList} = this.props.canvasData;
+        if(nextProps.canvasData.colorPalette !== colorPalette){
+            this.renderPalette(nextProps.canvasData.colorPalette);
         }
-        if(nextProps.shapeList !== this.props.shapeList){
-            this.renderShapeList(nextProps.shapeList);
+        if(nextProps.shapeList !== shapeList){
+            this.renderShapeList(nextProps.canvasData.shapeList);
         }
     }   
     handleColorOptions(value){
@@ -43,16 +45,16 @@ class ShapeMenu extends Component {
         }))
     }
     hoverShape(item){
-        this.props.dispatch(selectShape(item))
+        store.dispatch(selectShape(item))
     }
     toggleShapeType(type){
-        this.props.dispatch(changeShapeType(type))
+        store.dispatch(changeShapeType(type))
     }
     handleColorChange(value, color) {
         if(this.state.status === Common.shape){
-            this.props.dispatch(changeShapeColor(color));
+            store.dispatch(changeShapeColor(color));
         } else {
-            this.props.dispatch(changeBackgroundColor(color));
+            store.dispatch(changeBackgroundColor(color));
         }
         this.setState(state => ({
             ...state, 
@@ -74,57 +76,65 @@ class ShapeMenu extends Component {
         });
     }
     selectShape(item){
-        this.props.dispatch(selectShape(item.id))
+        store.dispatch(selectShape(item.id))
     }
     displayShape(style){
         return <div style={style.shapeDisplay}></div>
     }
     renderPalette(){
-        return map(this.props.colorPalette, item => {
+        return map(this.props.canvasData.colorPalette, item => {
             return <div className='color-menu-color-palette-item' style={{backgroundColor: item.color}}></div>
         });
     }
     changeDimensions(attribute, plus){
         if(attribute === Common.width){
-            const newWidth = plus ? this.props.shapeWidth + 5 : this.props.shapeWidth - 5;
-            this.props.dispatch(changeShapeWidth(newWidth))
+            const newWidth = plus ? this.props.canvasData.shapeWidth + 5 : this.props.canvasData.shapeWidth - 5;
+            store.dispatch(changeShapeWidth(newWidth))
         }
         if(attribute === Common.height){
-            const newHeight = plus ? this.props.shapeHeight + 5 : this.props.shapeHeight - 5;
-            this.props.dispatch(changeShapeHeight(newHeight))
+            const newHeight = plus ? this.props.canvasData.shapeHeight + 5 : this.props.canvasData.shapeHeight - 5;
+            store.dispatch(changeShapeHeight(newHeight))
         }
         if(attribute === Common.radius){
-            const newRadius = plus ? this.props.shapeRadius + 5 : this.props.shapeRadius - 5;
-            this.props.dispatch(changeShapeRadius(newRadius))
+            const newRadius = plus ? this.props.canvasData.shapeRadius + 5 : this.props.canvasData.shapeRadius - 5;
+            store.dispatch(changeShapeRadius(newRadius))
         }
     }
     render(){
+        const {
+            shapeColor, 
+            backgroundColor, 
+            shapeRadius, 
+            shapeType,
+            shapeWidth,
+            shapeHeight
+        } = this.props.canvasData;
         const style = {
             main: {
                 width: `${Size.sidePanelMenuWidth}px`,
                 left: `${Size.sidePanelWidth}px`,
             },
             display: {
-                backgroundColor: `${this.props.backgroundColor}`
+                backgroundColor: `${backgroundColor}`
             },
             shapeDisplay: {
-                backgroundColor: this.props.shapeColor,
+                backgroundColor: shapeColor,
                 width: '50px',
                 height: '50px',
-                borderRadius: this.props.shapeType === Common.square ? '0' : '50%'
+                borderRadius: shapeType === Common.square ? '0' : '50%'
             }
           };
           let color = null;
           if(this.state.status === Common.shape){
-            color = this.state.dirty ? this.state.value : this.props.shapeColor;
+            color = this.state.dirty ? this.state.value : shapeColor;
           } else {
-            color = this.state.dirty ? this.state.value : this.props.backgroundColor;
+            color = this.state.dirty ? this.state.value : backgroundColor;
           }
         return (
             <div className='layer-menu-2' style={style.main}>
                 <h3 className='layer-menu-2-title'>{this.props.name}</h3>
                 <div className='layer-menu-2-display'>
-                    <div className='layer-menu-2-display-inner' style={{backgroundColor: this.props.backgroundColor}}>
+                    <div className='layer-menu-2-display-inner' style={{backgroundColor: backgroundColor}}>
                         {this.displayShape(style)}
                     </div>
                 </div>
@@ -132,12 +142,12 @@ class ShapeMenu extends Component {
                 <div className='shape-menu-type-display'>
                     <div 
                         className='shape-menu-type-square' 
-                        style={{border: this.props.shapeType === Common.square ? '2px solid white' : 'none'}}
+                        style={{border: shapeType === Common.square ? '2px solid white' : 'none'}}
                         onClick={() => this.toggleShapeType(Common.square)}
                     ></div>
                     <div 
                         className='shape-menu-type-circle' 
-                        style={{border: this.props.shapeType === Common.circle ? '2px solid white' : 'none'}}
+                        style={{border: shapeType === Common.circle ? '2px solid white' : 'none'}}
                         onClick={() => this.toggleShapeType(Common.circle)}
                     ></div>
                 </div>
@@ -146,38 +156,38 @@ class ShapeMenu extends Component {
                 <ColorPicker 
                     color={color} 
                     colorChange={this.handleColorChange}
-                    shapeColor={this.props.shapeColor}
-                    backgroundColor={this.props.backgroundColor}
+                    shapeColor={shapeColor}
+                    backgroundColor={backgroundColor}
                 />
                 
                 <h4 className='shape-menu-title'>{Common.size}</h4>
-                {this.props.shapeType === Common.square && (
+                {shapeType === Common.square && (
                     <div className='shape-menu-size-row'>
                         <div className='shape-menu-size-label'>{Common.width}</div>
                         <div className='shape-menu-size-input-wrap'>
                             <i className="far fa-minus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.width, false)}></i>
-                            <input className='shape-menu-size-input' value={this.props.shapeWidth}/>
+                            <input className='shape-menu-size-input' value={shapeWidth}/>
                             <i className="far fa-plus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.width, true)}></i>
                         </div>
                     </div>
                 )}
-                {this.props.shapeType === Common.square && (
+                {shapeType === Common.square && (
                     <div className='shape-menu-size-row'>
                         <div className='shape-menu-size-label'>{Common.height}</div>
                         <div className='shape-menu-size-input-wrap'>
                             <i className="far fa-minus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.height, false)}></i>
-                            <input className='shape-menu-size-input' value={this.props.shapeHeight}/>
+                            <input className='shape-menu-size-input' value={shapeHeight}/>
                             <i className="far fa-plus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.height, true)}></i>
                         </div>
                     </div>
                 )}
                 
-                {this.props.shapeType === Common.circle && (
+                {shapeType === Common.circle && (
                     <div className='shape-menu-size-row'>
                         <div className='shape-menu-size-label'>{Common.radius}</div>
                         <div className='shape-menu-size-input-wrap'>
                             <i className="far fa-minus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.radius, false)}></i>
-                            <input className='shape-menu-size-input' value={this.props.shapeRadius}/>
+                            <input className='shape-menu-size-input' value={shapeRadius}/>
                             <i className="far fa-plus-circle shape-menu-size-icon" onClick={() => this.changeDimensions(Common.radius, true)}></i>
                         </div>
                     </div>
@@ -187,18 +197,5 @@ class ShapeMenu extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    const {backgroundColor, shapeWidth, shapeHeight, shapeRadius, shapeType, shapeColor, colorPalette} = state.canvas;
-    return {
-        ...state,
-        shapeColor,
-        shapeWidth,
-        shapeRadius,
-        shapeHeight,
-        shapeType,
-        backgroundColor,
-        colorPalette
-    }
-}
 
-export default connect(mapStateToProps)(ShapeMenu);
+export default ShapeMenu;

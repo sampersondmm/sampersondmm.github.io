@@ -119,7 +119,7 @@ fetchCanvasList = () => {
 createCanvas = canvasData => (dispatch, getState) => {
     let {currentUser} = getState();
     const {id} = currentUser.user;
-    apiCall('post', `/api/users/${id}/canvas`, canvasData)
+    apiCall('post', `/api/users/${id}/canvas`, {canvasData})
         .then(res => {})
         .catch(err => dispatch(addError(err.message)));
 };

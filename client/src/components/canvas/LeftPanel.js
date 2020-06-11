@@ -43,12 +43,13 @@ class LeftPanel extends Component {
          }))
     }
     render(){
+        const {canvasData} = this.props;
         return (
             <div className='left-panel'>
 
                 {this.props.isOpen && (
                     <ShapeMenu
-                        shapeList={this.props.shapeList}
+                        canvasData={canvasData}
                     />
                 )}
                 <PanelButton 
@@ -77,16 +78,4 @@ class LeftPanel extends Component {
     }
 }
 
-const mapStateToProps= (state) => {
-    const {backgroundColor, shapeColor, shapeList, width, height} = state.canvas
-    return {
-        ...state,
-        backgroundColor,
-        shapeColor,
-        shapeList,
-        width,
-        height
-    }
-}
-
-export default connect(mapStateToProps)(LeftPanel);
+export default LeftPanel;

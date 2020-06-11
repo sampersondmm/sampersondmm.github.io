@@ -5,7 +5,7 @@ import LeftPanel from './LeftPanel';
 import TopPanel from './topPanel/TopPanel';
 import Size from '../../constants/size';
 import ShapeCanvas from './ShapeCanvas'
-import {addShapeToCanvas, clearCanvasData} from '../../actions/canvasActions';
+import {addShapeToCanvas, createCanvas, clearCanvasData} from '../../actions/canvasActions';
 
 class Canvas extends Component {
     constructor(props){
@@ -18,12 +18,21 @@ class Canvas extends Component {
         this.handleLeftMenu = this.handleLeftMenu.bind(this);
         this.addShape = this.addShape.bind(this);
         this.determineWidth = this.determineWidth.bind(this);
+        this.createCanvas = this.createCanvas.bind(this);
     }
     handleRightMenu(){
         this.setState(state => ({
             ...state,
             rightPanelOpen: !state.rightPanelOpen
         }))
+    }
+    componentDidMount(){
+        this.props.dispatch(clearCanvasData())
+    }
+    componentWillReceiveProps(nextProps){
+        if(this.props.canvas !== nextProps.canvas){
+            console.log('test');
+        }
     }
     handleLeftMenu(){
         this.setState(state => ({
@@ -33,6 +42,9 @@ class Canvas extends Component {
     }
     addShape(newShape){
         this.props.dispatch(addShapeToCanvas(newShape))
+    }
+    createCanvas(){
+        this.props.dispatch(createCanvas(this.props.canvas.canvasData))
     }
     determineWidth(){
         const {rightPanelOpen, leftPanelOpen} = this.state;
@@ -52,7 +64,7 @@ class Canvas extends Component {
         return width;
     }
     render(){
-        const {canvas} = this.props, 
+        const {canvasData} = this.props.canvas, 
             width = this.determineWidth(),
             style = {
                 canvasDisplay: {
@@ -67,30 +79,24 @@ class Canvas extends Component {
             };
         return(
             <div className='canvas-wrap'>
-                <TopPanel canvasData={canvas.shapeList}/>
+                <TopPanel 
+                    canvas={canvasData}
+                    createCanvas={this.createCanvas}
+                />
                 <div className='canvas-display' style={style.canvasDisplay}>
                     <LeftPanel
                         handleMenu={this.handleLeftMenu}
                         isOpen={this.state.leftPanelOpen}
+                        canvasData={canvasData}
                     />
                     <div className='canvas-display-inner' style={style.canvasDisplayInner}>
                         <ShapeCanvas 
-                            // canvasWidth={this.props.canvasWidth}
-                            // canvasHeight={this.props.canvasHeight}
-                            // canvasScale={this.props.canvasScale}
-                            // backgroundColor={this.props.backgroundColor}
-                            // shapeColor={this.props.shapeColor}
-                            // shapeType={this.props.shapeType}
-                            // shapeWidth={this.props.shapeWidth}
-                            // shapeHeight={this.props.shapeHeight}
-                            // shapeRadius={this.props.shapeRadius}
                             addShape={this.addShape}
-                            canvas={this.props.canvas}
-                            // selectedShape={this.props.selectedShape}
-                            // updateCanvasData={updateCanvasData}
+                            canvas={canvasData}
                         />
                     </div>
                     <RightPanel
+                        canvasData={canvasData}
                         handleMenu={this.handleRightMenu}
                         isOpen={this.state.rightPanelOpen}
                     />

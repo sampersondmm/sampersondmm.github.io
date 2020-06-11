@@ -7,6 +7,7 @@ import ColorMenu from './ColorMenu';
 import ShapeMenu from './ShapeMenu';
 import PaletteMenu from './PaletteMenu';
 import Common from '../../../constants/common';
+import {connect} from 'react-redux';
 
 export const MenuTypes = {
     sideMenu: 'sideMenu',
@@ -26,15 +27,28 @@ class BaseTopMenu extends Component {
     handleMenus(){
         switch(this.props.name){
             case Common.size:
-                return <SizeMenu closeMenu={this.props.closeMenu}/>
+                return (
+                    <SizeMenu 
+                        closeMenu={this.props.closeMenu}
+                        canvasData={this.props.canvasData}
+                    />
+                )
             case Common.shape:
-                return <ShapeMenu/>
+                return (
+                    <ShapeMenu canvasData={this.props.canvasData}/>
+                )
             case Common.color: 
-                return <ColorMenu/>
+                return (
+                    <ColorMenu canvasData={this.props.canvasData}/>
+                )
             case Common.palette: 
-                return <PaletteMenu/>
+                return (
+                    <PaletteMenu canvasData={this.props.canvasData}/>
+                )
             case Common.zoom: 
-                return <ZoomMenu/>
+                return (
+                    <ZoomMenu canvasData={this.props.canvasData}/>
+                )
             default:
                 return;
         }
@@ -63,4 +77,10 @@ class BaseTopMenu extends Component {
     }
 }
 
-export default BaseTopMenu;
+const mapStateToProps = state => {
+    return {
+        canvasData: state.canvas.canvasData
+    }
+}
+
+export default connect(mapStateToProps)(BaseTopMenu);

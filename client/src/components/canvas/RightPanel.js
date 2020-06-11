@@ -36,26 +36,26 @@ class RightPanel extends Component {
          }))
     }
     render(){
+        const {canvasData} = this.props;
         return (
             <div className='right-panel'>
-                
-                    {this.props.isOpen && (
-                        <LayerMenu
-                            shapeList={this.props.shapeList}
-                        />
-                    )}
-
-                    {this.state.setup && (
-                        <SetupCanvas apply={this.setCanvasSize}/>
-                    )}
-
-                    <PanelButton 
-                        name={Common.layers}
-                        type={Common.sidePanel}
-                        tooltipPosition={TooltipPositions.right}
-                        onClick={this.handleMenus}
-                        icon={<i className="fal fa-layer-group"></i>}
+                {this.props.isOpen && (
+                    <LayerMenu
+                        canvasData={canvasData}
                     />
+                )}
+
+                {this.state.setup && (
+                    <SetupCanvas apply={this.setCanvasSize}/>
+                )}
+
+                <PanelButton 
+                    name={Common.layers}
+                    type={Common.sidePanel}
+                    tooltipPosition={TooltipPositions.right}
+                    onClick={this.handleMenus}
+                    icon={<i className="fal fa-layer-group"></i>}
+                />
             </div>
         )
     }

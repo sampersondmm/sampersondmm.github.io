@@ -7,6 +7,7 @@ import {changeShapeColor, changeBackgroundColor, addColorToPalette, removeColorF
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 import uuid from 'react-uuid';
+import {store} from '../../../';
 
 class PaletteMenu extends Component {
     constructor(props){
@@ -70,15 +71,15 @@ class PaletteMenu extends Component {
     }
     addToPalette(){
         let {currentColor} = this.state;
-        this.props.dispatch(addColorToPalette(currentColor));
+        store.dispatch(addColorToPalette(currentColor));
     }
     removeColor(){
         const {activeItem} = this.state,
             newColorPalette = reject(this.props.colorPalette, ['uuid', activeItem]);
-        this.props.dispatch(removeColorFromPalette(newColorPalette));
+        store.dispatch(removeColorFromPalette(newColorPalette));
     }
     emptyPalette(){
-        this.props.dispatch(removeColorFromPalette([]));
+        store.dispatch(removeColorFromPalette([]));
     }
     addColorPicker(){
         let {addColorPicker} = this.state;
@@ -167,12 +168,4 @@ class PaletteMenu extends Component {
 }
 
 
-const mapStateToProps = state => {
-    const {backgroundColor, shapeColor, colorPalette} = state.canvas;
-    return {
-        ...state,
-        colorPalette
-    }
-}
-
-export default connect(mapStateToProps)(PaletteMenu);
+export default PaletteMenu;

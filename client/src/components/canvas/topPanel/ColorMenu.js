@@ -6,6 +6,7 @@ import Common from '../../../constants/common';
 import Size from '../../../constants/size';
 import {changeShapeColor, changeBackgroundColor} from '../../../actions/canvasActions';
 import map from 'lodash/map';
+import {store} from '../../../index';
 
 class ColorMenu extends Component {
     constructor(props){
@@ -20,8 +21,9 @@ class ColorMenu extends Component {
         this.selectPalleteColor = this.selectPalleteColor.bind(this);
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.colorPalette !== this.props.colorPalette){
-            this.renderPalette(nextProps.colorPalette);
+        const {colorPalette} = this.props.canvasData;
+        if(nextProps.canvasData.colorPalette !== colorPalette){
+            this.renderPalette(nextProps.canvasData.colorPalette);
         }
     }   
     handleColorOptions(value){
@@ -33,9 +35,9 @@ class ColorMenu extends Component {
     }
     handleColorChange(value, color) {
         if(this.state.status === Common.shape){
-            this.props.dispatch(changeShapeColor(color));
+            store.dispatch(changeShapeColor(color));
         } else {
-            this.props.dispatch(changeBackgroundColor(color));
+            store.dispatch(changeBackgroundColor(color));
         }
         this.setState(state => ({
             ...state, 
@@ -44,16 +46,16 @@ class ColorMenu extends Component {
         }));
     }
     renderPalette(){
-        return map(this.props.colorPalette, item => {
+        return map(this.props.canvasData.colorPalette, item => {
             return <div className='color-menu-color-palette-item' onClick={() => this.selectPalleteColor(item)} style={{backgroundColor: item.color}}></div>
         });
     }
     selectPalleteColor(item){
         const {color} = item;
         if(this.state.status === Common.shape){
-            this.props.dispatch(changeShapeColor(color));
+            store.dispatch(changeShapeColor(color));
         } else {
-            this.props.dispatch(changeBackgroundColor(color));
+            store.dispatch(changeBackgroundColor(color));
         }
     }
     render(){
@@ -62,20 +64,20 @@ class ColorMenu extends Component {
                 width: Size.sidePanelMenuWidth
             },
             display: {
-                backgroundColor: this.props.backgroundColor
+                backgroundColor: this.props.canvasData.backgroundColor
             },
             shape: {
                 width: '60px',
                 height: '60px',
-                backgroundColor: this.props.shapeColor,
+                backgroundColor: this.props.canvasData.shapeColor,
                 borderRadius: this.props.shapeType === Common.square ? '0' : '50%'
             }
           };
           let color = null;
           if(this.state.status === Common.shape){
-            color = this.state.dirty ? this.state.value : this.props.shapeColor;
+            color = this.state.dirty ? this.state.value : this.props.canvasData.shapeColor;
           } else {
-            color = this.state.dirty ? this.state.value : this.props.backgroundColor;
+            color = this.state.dirty ? this.state.value : this.props.canvasData.backgroundColor;
           }
         return (
             <div className='top-panel-menu-body'>
@@ -106,8 +108,8 @@ class ColorMenu extends Component {
                 <ColorPicker 
                     color={color} 
                     colorChange={this.handleColorChange}
-                    shapeColor={this.props.shapeColor}
-                    backgroundColor={this.props.backgroundColor}
+                    shapeColor={this.props.canvasData.shapeColor}
+                    backgroundColor={this.props.canvasData.backgroundColor}
                 />
                 <div className='color-menu-color-palette-display'>
                     {this.renderPalette()}
@@ -117,15 +119,4 @@ class ColorMenu extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    const {backgroundColor, shapeColor, shapeType, colorPalette} = state.canvas;
-    return {
-        ...state,
-        shapeColor,
-        backgroundColor,
-        shapeType,
-        colorPalette
-    }
-}
-
-export default connect(mapStateToProps)(ColorMenu);
+export default ColorMenu;

@@ -34,8 +34,7 @@ class TopPanel extends Component {
         }))
     }
     saveCanvas(){
-        const {canvas} = this.props
-        this.props.createCanvas({canvasData: canvas})
+        this.props.createCanvas()
     }
     handleMenus(){
         switch(this.state.isOpen){
@@ -76,7 +75,7 @@ class TopPanel extends Component {
         }
     }
     changeCanvasSize(width, height){
-        this.props.dispatch(setCanvasSize(Number(width), Number(height)))
+        setCanvasSize(Number(width), Number(height));
         this.setState(state => ({
             ...state,
             setup: false,
@@ -157,15 +156,4 @@ class TopPanel extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    const {backgroundColor, shapeColor, width, height} = state.canvas;
-    return {
-        ...state,
-        backgroundColor,
-        shapeColor,
-        width,
-        height
-    }
-}
-
-export default connect(mapStateToProps, {createCanvas})(TopPanel);
+export default TopPanel;

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import CanvasView from './canvas/topPanel/CanvasView';
 import NavBar from './NavBar';
 import {fetchCanvasList} from '../actions/canvasActions';
 import {connect} from 'react-redux';

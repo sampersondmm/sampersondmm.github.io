@@ -27,11 +27,12 @@ class LayerMenu extends Component {
         this.hoverShape = this.hoverShape.bind(this);
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.colorPalette !== this.props.colorPalette){
-            this.renderPalette(nextProps.colorPalette);
+        const {colorPalette, shapeList} = this.props.canvasData;
+        if(nextProps.canvasData.colorPalette !== colorPalette){
+            this.renderPalette(nextProps.canvasData.colorPalette);
         }
-        if(nextProps.shapeList !== this.props.shapeList){
-            this.renderShapeList(nextProps.shapeList);
+        if(nextProps.canvasData.shapeList !== shapeList){
+            this.renderShapeList(nextProps.canvasData.shapeList);
         }
     }   
     handleColorOptions(value){
@@ -57,7 +58,7 @@ class LayerMenu extends Component {
         }));
     }
     renderShapeList(){
-        return map(this.props.shapeList, item => {
+        return map(this.props.canvasData.shapeList, item => {
             return (
                 <div className='layer-menu-shape-item' onClick={() => this.selectShape(item)}>
                     <div 
@@ -76,36 +77,37 @@ class LayerMenu extends Component {
         return <div></div>
     }
     renderPalette(){
-        return map(this.props.colorPalette, item => {
+        return map(this.props.canvasData.colorPalette, item => {
             return <div className='color-menu-color-palette-item' style={{backgroundColor: item.color}}></div>
         });
     }
     render(){
+        const {shapeColor, backgroundColor} = this.props.canvasData;
         const style = {
             main: {
                 width: `${Size.sidePanelMenuWidth}px`,
                 right: `${Size.sidePanelWidth}px`
             },
             display: {
-                backgroundColor: `${this.props.backgroundColor}`
+                backgroundColor: `${backgroundColor}`
             },
             shape: {
                 width: '50%',
                 height: '50%',
-                backgroundColor: `${this.props.shapeColor}`
+                backgroundColor: `${shapeColor}`
             }
           };
           let color = null;
           if(this.state.status === Common.shape){
-            color = this.state.dirty ? this.state.value : this.props.shapeColor;
+            color = this.state.dirty ? this.state.value : shapeColor;
           } else {
-            color = this.state.dirty ? this.state.value : this.props.backgroundColor;
+            color = this.state.dirty ? this.state.value : backgroundColor;
           }
         return (
             <div className='layer-menu' style={style.main}>
                 <h3 className='layer-menu-title'>{this.props.name}</h3>
                 <div className='layer-menu-display'>
-                    <div className='layer-menu-display-inner' style={{backgroundColor: this.props.backgroundColor}}>
+                    <div className='layer-menu-display-inner' style={{backgroundColor}}>
                         {this.displayShape()}
                     </div>
                 </div>
@@ -117,14 +119,4 @@ class LayerMenu extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    const {backgroundColor, shapeColor, colorPalette} = state.canvas;
-    return {
-        ...state,
-        shapeColor,
-        backgroundColor,
-        colorPalette
-    }
-}
-
-export default connect(mapStateToProps)(LayerMenu);
+export default LayerMenu;
